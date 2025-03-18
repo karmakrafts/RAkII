@@ -1,0 +1,9 @@
+abi_version=1.201.0
+builtins_platform=NATIVE
+compiler_version=2.1.10
+depends=stdlib
+ir_signature_versions=1,2
+metadata_version=1.4.1
+native_targets=android_arm64
+short_name=rakii
+unique_name=dev.karmakrafts.rakii\:rakii

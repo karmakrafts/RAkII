@@ -1,0 +1,73 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../rakii/1.0.0.0-SNAPSHOT/rakii-1.0.0.0-SNAPSHOT.module",
+    "group": "dev.karmakrafts.rakii",
+    "module": "rakii",
+    "version": "1.0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "mingwX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "rakii-mingwX64Main-1.0.0.0-SNAPSHOT.klib",
+          "url": "rakii-mingwx64-1.0.0.0-SNAPSHOT.klib",
+          "size": 7967,
+          "sha512": "9c168cd1e154945c8749f45359a4912448e496b6c782b63e64064a195c8f1908290cb7402e8005ac5a080a4377cf8ec4969e8b28ebb7fca16f91652f571f9e67",
+          "sha256": "c6a155064c1060e572da9f76f97c7696f0f473d8d8477797c183e4709bbb941b",
+          "sha1": "959e6903b3b1ad41c543af5de84c13f757e3c88a",
+          "md5": "05872b5ef53e6bb23ff4b1d84c5e9897"
+        }
+      ]
+    },
+    {
+      "name": "mingwX64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "mingw_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "rakii-mingwx64-1.0.0.0-SNAPSHOT-sources.jar",
+          "url": "rakii-mingwx64-1.0.0.0-SNAPSHOT-sources.jar",
+          "size": 3496,
+          "sha512": "ff362efb4968b6452810050431bfff69e639bfc9cb18cd248ab1bdc8e6f070e124a81a49950e0ab08e0c83eaff092bfe4f7afea125a721e4ef350bd4f7bfc858",
+          "sha256": "48f3dcf04ef99262a51275c3b3c3e9ac5d6587b7b908ab668fa0930abf487592",
+          "sha1": "7ee885e927fb08bf092cb680e41a8783f372d6c8",
+          "md5": "1bc512575cf36962b11e102a2ab752bc"
+        }
+      ]
+    }
+  ]
+}

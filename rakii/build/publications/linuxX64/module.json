@@ -1,0 +1,73 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../rakii/1.0.0.0-SNAPSHOT/rakii-1.0.0.0-SNAPSHOT.module",
+    "group": "dev.karmakrafts.rakii",
+    "module": "rakii",
+    "version": "1.0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "rakii-linuxX64Main-1.0.0.0-SNAPSHOT.klib",
+          "url": "rakii-linuxx64-1.0.0.0-SNAPSHOT.klib",
+          "size": 7967,
+          "sha512": "0401193d1a3062ddb3e22657c358308c069b30bcd5920e8a6799a69bb9ff24240b7830b7256b2d8bdce54bfa801f238ea231a5eb931636ed5b8f47cd63b3c188",
+          "sha256": "4816954dce378683062ee3caf4a887641d8276dc7a6d8cac5e266733c446d998",
+          "sha1": "45d2eda40cfdb7a264bf6406710204185d196fb0",
+          "md5": "4f509b91bc06c348461b7756167485e2"
+        }
+      ]
+    },
+    {
+      "name": "linuxX64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "rakii-linuxx64-1.0.0.0-SNAPSHOT-sources.jar",
+          "url": "rakii-linuxx64-1.0.0.0-SNAPSHOT-sources.jar",
+          "size": 3496,
+          "sha512": "ff362efb4968b6452810050431bfff69e639bfc9cb18cd248ab1bdc8e6f070e124a81a49950e0ab08e0c83eaff092bfe4f7afea125a721e4ef350bd4f7bfc858",
+          "sha256": "48f3dcf04ef99262a51275c3b3c3e9ac5d6587b7b908ab668fa0930abf487592",
+          "sha1": "7ee885e927fb08bf092cb680e41a8783f372d6c8",
+          "md5": "1bc512575cf36962b11e102a2ab752bc"
+        }
+      ]
+    }
+  ]
+}

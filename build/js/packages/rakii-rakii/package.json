@@ -1,0 +1,10 @@
+{
+  "name": "rakii-rakii",
+  "version": "1.0.0-0-SNAPSHOT",
+  "main": "kotlin/rakii-rakii.js",
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}

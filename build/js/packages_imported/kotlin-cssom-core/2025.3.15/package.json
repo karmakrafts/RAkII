@@ -1,0 +1,11 @@
+{
+  "name": "kotlin-cssom-core",
+  "version": "2025.3.15",
+  "main": "kotlin-cssom-core.mjs",
+  "types": "kotlin-cssom-core.d.ts",
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}

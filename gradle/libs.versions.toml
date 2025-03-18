@@ -1,0 +1,20 @@
+[versions]
+java = "11"
+
+rakii = "1.0.0"
+kotlin = "2.1.10" # https://github.com/JetBrains/kotlin/releases
+kotlinWrappers = "2025.3.15" # https://github.com/JetBrains/kotlin-wrappers/releases
+dokka = "2.0.0" # https://github.com/Kotlin/dokka/releases
+karmaConventions = "1.1.0.0-SNAPSHOT"
+
+[libraries]
+kotlin-wrappers-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-js", version.ref = "kotlinWrappers" }
+kotlin-wrappers-browser = { module = "org.jetbrains.kotlin-wrappers:kotlin-browser", version.ref = "kotlinWrappers" }
+kotlin-wrappers-browser-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-browser-js", version.ref = "kotlinWrappers" }
+kotlin-wrappers-web = { module = "org.jetbrains.kotlin-wrappers:kotlin-web", version.ref = "kotlinWrappers" }
+kotlin-wrappers-web-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-web-js", version.ref = "kotlinWrappers" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+karmaConventions = { id = "dev.karmakrafts.conventions.karma-conventions", version.ref = "karmaConventions" }

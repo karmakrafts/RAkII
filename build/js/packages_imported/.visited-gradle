@@ -1,0 +1,39 @@
+{
+  "version": "9",
+  "items": {
+    "1923267fd7761c155bba2ccca7099aa8": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-js/2.1.10/7c8de979c7f8588ea08c33a94a91e5c0b448726e/kotlin-stdlib-js-2.1.10.klib"
+    },
+    "da2498cb322f3066e609531d5c6babd6": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-dom-api-compat/2.1.10/40b26bd1544634256a38fa11cd8b9c0afbc82d01/kotlin-dom-api-compat-2.1.10.klib"
+    },
+    "42ca3b79bd2930225401c367d91402f9": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin-wrappers/kotlin-js-js/2025.3.15/b65d65def25d3a2075be2cb976493e03605b2be8/kotlin-js-js-2025.3.15.klib"
+    },
+    "3f1512bff8aa7f29ce29e75d9ea18b08": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-js/1.10.1/9112578326a64513c6df1efdb6fae1d75457ac02/kotlinx-coroutines-core-js-1.10.1.klib"
+    },
+    "858404fde54d6639e1ac43a05516a54f": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-js/0.26.1/ba91e363bea53a576f68a7678e2cb65872b28e2b/atomicfu-js-0.26.1.klib"
+    },
+    "36dcef101e407431f8465e824f1bd8b4": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin-wrappers/kotlin-js-core-js/2025.3.15/ab1c290fb76d53e2a205e1071395b0ad8728cf10/kotlin-js-core-js-2025.3.15.klib"
+    },
+    "0acba06aedaed5b27081700a69ab0b18": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/io.github.turansky.seskar/seskar-core-js/4.4.0/e2195bb90c16d0960297fdcbdf78bba52ee0c3d7/seskar-core-js-4.4.0.klib"
+    },
+    "2ff382b1f8dda16978220f47ec5348c9": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-js-plain-objects/2.1.10/510f9572f8c93aa725f6c96a5f29cc921cfc087b/kotlin-js-plain-objects-2.1.10.klib"
+    },
+    "13587492389c6a92be21dcaa3e879a4e": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin-wrappers/kotlin-browser-js/2025.3.15/1e13941832139b42ef97e853bdf1f3c0a3c73f76/kotlin-browser-js-2025.3.15.klib"
+    },
+    "eaa32877d11dfbec0856d338c576e4a2": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin-wrappers/kotlin-web-js/2025.3.15/e2011b85e1e759b624cc2a24384deee804cd2f76/kotlin-web-js-2025.3.15.klib"
+    },
+    "b1d868fbc40dd8354ecf8ac4edca5fad": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin-wrappers/kotlin-cssom-core-js/2025.3.15/dfc7db43f44a7f691deaacfb166dc1f705264d86/kotlin-cssom-core-js-2025.3.15.klib",
+      "target": "kotlin-cssom-core/2025.3.15"
+    }
+  }
+}

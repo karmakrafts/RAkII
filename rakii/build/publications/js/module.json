@@ -1,0 +1,151 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../rakii/1.0.0.0-SNAPSHOT/rakii-1.0.0.0-SNAPSHOT.module",
+    "group": "dev.karmakrafts.rakii",
+    "module": "rakii",
+    "version": "1.0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "jsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "2.1.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "rakii-js-1.0.0.0-SNAPSHOT.klib",
+          "url": "rakii-js-1.0.0.0-SNAPSHOT.klib",
+          "size": 8434,
+          "sha512": "e98e04160bc510c3bf8c181f97830190d41ee760c8eb8df79c63e8bb5293b335bd4d2b237c86dab1ed001bd0078e4a9f99ca32c07135add8dbb40808e58120c3",
+          "sha256": "33df496395f7bd61669ff44abac6e038e6e964267f1ace47b49fd15869d55a1c",
+          "sha1": "905fd19d5271126ef87c640d639e26eb6ab515e5",
+          "md5": "89f133c7d139fcb70637e1069d914498"
+        }
+      ]
+    },
+    {
+      "name": "jsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "2.1.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.10"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-js",
+          "version": {
+            "requires": "2025.3.15"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-browser",
+          "version": {
+            "requires": "2025.3.15"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-browser-js",
+          "version": {
+            "requires": "2025.3.15"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-web",
+          "version": {
+            "requires": "2025.3.15"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-web-js",
+          "version": {
+            "requires": "2025.3.15"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "rakii-js-1.0.0.0-SNAPSHOT.klib",
+          "url": "rakii-js-1.0.0.0-SNAPSHOT.klib",
+          "size": 8434,
+          "sha512": "e98e04160bc510c3bf8c181f97830190d41ee760c8eb8df79c63e8bb5293b335bd4d2b237c86dab1ed001bd0078e4a9f99ca32c07135add8dbb40808e58120c3",
+          "sha256": "33df496395f7bd61669ff44abac6e038e6e964267f1ace47b49fd15869d55a1c",
+          "sha1": "905fd19d5271126ef87c640d639e26eb6ab515e5",
+          "md5": "89f133c7d139fcb70637e1069d914498"
+        }
+      ]
+    },
+    {
+      "name": "jsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "files": [
+        {
+          "name": "rakii-js-1.0.0.0-SNAPSHOT-sources.jar",
+          "url": "rakii-js-1.0.0.0-SNAPSHOT-sources.jar",
+          "size": 3481,
+          "sha512": "e1263d7377aff8dc9d1a95139d584f7bb014d6a541ab78006975f7698b4cd212c0c78aa05d4f4773858e9ee7dcedd7105b8b5c711327dacc9a746414dfa632cb",
+          "sha256": "61862c3768cc97ad076137e797702a282ff7d5c4d9e5da9ae078e48a8ac89b22",
+          "sha1": "fc866fbffaeb24f80cde11c4c71009df8377f32b",
+          "md5": "e65ac49ae8f68ebbe044a076e59293bf"
+        }
+      ]
+    }
+  ]
+}

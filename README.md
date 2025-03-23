@@ -1,4 +1,4 @@
-# RAAkI
+# RAkII
 
 RAkII (or Kotlin RAII) is a lightweight runtime library and compiler plugin
 which allows using structured RAII with support for error handling in Kotlin Multiplatform.

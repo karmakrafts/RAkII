@@ -19,7 +19,6 @@ import dev.karmakrafts.conventions.configureJava
 
 plugins {
     alias(libs.plugins.dokka) apply false
-    alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.karmaConventions)
 }
 

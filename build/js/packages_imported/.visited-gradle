@@ -34,6 +34,21 @@
     "b1d868fbc40dd8354ecf8ac4edca5fad": {
       "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin-wrappers/kotlin-cssom-core-js/2025.3.15/dfc7db43f44a7f691deaacfb166dc1f705264d86/kotlin-cssom-core-js-2025.3.15.klib",
       "target": "kotlin-cssom-core/2025.3.15"
+    },
+    "d6a970c21658969398cb0be49433e49c": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-js/0.27.0/4c0892a34d154b17bf6f59c78801ee1a85c2994c/atomicfu-js-0.27.0.klib"
+    },
+    "28cb3f70b5a55223979f2780aeaf6be3": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-js/2.1.10/1dc7247c9795e8717dd6204dfb76bb556958f616/kotlin-test-js-2.1.10.klib"
+    },
+    "db1e11384d9c145d1ba6693345e25742": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-js/2.1.20/5b335b71e2d6fa1c64b80753498958d18596e43e/kotlin-stdlib-js-2.1.20.klib"
+    },
+    "4341b47141b70ff4531d018f1c89797d": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-dom-api-compat/2.1.20/d261f5f9a99e24ba6dda3688e67b2c43dac99a48/kotlin-dom-api-compat-2.1.20.klib"
+    },
+    "9aee8fa26ab82632ec0cc3c37daaa869": {
+      "src": "/media/data/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-js/2.1.20/9d420aa80d3c52a414e770482bcd715dd2ebee71/kotlin-test-js-2.1.20.klib"
     }
   }
 }

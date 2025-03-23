@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "moduleId": "org.jetbrains.kotlinx:atomicfu:0.27.0",
+    "file": "/media/data/develop/rakii/.kotlin/metadata/kotlinTransformedCInteropMetadataLibraries/org.jetbrains.kotlinx-atomicfu-0.27.0-appleMain-cinterop/org.jetbrains.kotlinx_atomicfu-cinterop-interop-WOkCig.klib",
+    "sourceSetName": "appleMain"
+  }
+]

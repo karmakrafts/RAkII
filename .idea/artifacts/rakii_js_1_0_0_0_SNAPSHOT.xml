@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="rakii-js-1.0.0.0-SNAPSHOT">
     <output-path>$PROJECT_DIR$/rakii/build/libs</output-path>
-    <root id="archive" name="rakii-js-1.0.0.0-SNAPSHOT.jar">
-      <element id="module-output" name="rakii.rakii.jsMain" />
-    </root>
+    <root id="archive" name="rakii-js-1.0.0.0-SNAPSHOT.jar" />
   </artifact>
 </component>

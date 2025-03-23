@@ -33,4 +33,6 @@ dependencyResolutionManagement {
     }
 }
 
-include("rakii")
+include("rakii-runtime")
+include("rakii-gradle-plugin")
+include("rakii-compiler-plugin")

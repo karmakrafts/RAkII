@@ -9,7 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/rakii" />
+            <option value="$PROJECT_DIR$/rakii-compiler-plugin" />
+            <option value="$PROJECT_DIR$/rakii-gradle-plugin" />
+            <option value="$PROJECT_DIR$/rakii-runtime" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,20 +1,20 @@
 [versions]
 java = "11"
 
-rakii = "1.0.0"
-kotlin = "2.1.10" # https://github.com/JetBrains/kotlin/releases
-kotlinWrappers = "2025.3.15" # https://github.com/JetBrains/kotlin-wrappers/releases
+rakii = "1.0.39"
+kotlin = "2.1.20" # https://github.com/JetBrains/kotlin/releases
 dokka = "2.0.0" # https://github.com/Kotlin/dokka/releases
-karmaConventions = "1.1.0.0-SNAPSHOT"
+karmaConventions = "1.2.0.0-SNAPSHOT"
+autoService = "1.1.1" # https://github.com/google/auto/releases
 
 [libraries]
-kotlin-wrappers-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-js", version.ref = "kotlinWrappers" }
-kotlin-wrappers-browser = { module = "org.jetbrains.kotlin-wrappers:kotlin-browser", version.ref = "kotlinWrappers" }
-kotlin-wrappers-browser-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-browser-js", version.ref = "kotlinWrappers" }
-kotlin-wrappers-web = { module = "org.jetbrains.kotlin-wrappers:kotlin-web", version.ref = "kotlinWrappers" }
-kotlin-wrappers-web-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-web-js", version.ref = "kotlinWrappers" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 karmaConventions = { id = "dev.karmakrafts.conventions.karma-conventions", version.ref = "karmaConventions" }

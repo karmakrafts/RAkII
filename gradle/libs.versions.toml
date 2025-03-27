@@ -1,7 +1,7 @@
 [versions]
 java = "11"
 
-rakii = "1.0.39"
+rakii = "1.0.41"
 kotlin = "2.1.20" # https://github.com/JetBrains/kotlin/releases
 dokka = "2.0.0" # https://github.com/Kotlin/dokka/releases
 karmaConventions = "1.2.0.0-SNAPSHOT"

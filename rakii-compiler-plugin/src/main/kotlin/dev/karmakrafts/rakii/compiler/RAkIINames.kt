@@ -32,6 +32,7 @@ internal object RAkIINames {
     val dropDelegateClassFqName: FqName = dropDelegateClassId.asSingleFqName()
 
     val dropFunctionName: Name = Name.identifier("drop")
+    val droppingFunctionName: Name = Name.identifier("dropping")
 
     val delegateDropFunctionId: CallableId = CallableId(dropDelegateClassId, dropFunctionName)
 }

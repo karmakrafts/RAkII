@@ -26,6 +26,6 @@ internal class RAkIIFirExtensionRegistrar(
 ) : FirExtensionRegistrar() {
     override fun ExtensionRegistrarContext.configurePlugin() {
         messageCollector.report(CompilerMessageSeverity.INFO, "Configuring RAkII FIR generation extension")
-        +FirDeclarationGenerationExtension.Factory { RAkIIGenerationExtension(it, messageCollector) }
+        +FirDeclarationGenerationExtension.Factory { RAkIIDropGenerationExtension(it, messageCollector) }
     }
 }

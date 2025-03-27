@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 
 @OptIn(ExperimentalAtomicApi::class)
-class DropDelegate<TYPE : Any, OWNER : Any> @PublishedApi internal constructor(
+class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
     @PublishedApi internal val instance: OWNER,
     @PublishedApi internal val dropHandler: (TYPE) -> Unit,
     @PublishedApi internal val initializer: () -> TYPE

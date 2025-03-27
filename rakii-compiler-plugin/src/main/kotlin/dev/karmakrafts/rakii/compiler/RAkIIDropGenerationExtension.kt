@@ -20,6 +20,8 @@ import org.jetbrains.kotlin.GeneratedDeclarationKey
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.descriptors.Visibilities
+import org.jetbrains.kotlin.descriptors.isClass
+import org.jetbrains.kotlin.descriptors.isObject
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
 import org.jetbrains.kotlin.fir.declarations.utils.isClass
@@ -35,7 +37,7 @@ import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
 
-internal class RAkIIGenerationExtension(
+internal class RAkIIDropGenerationExtension(
     session: FirSession,
     private val messageCollector: MessageCollector
 ) : FirDeclarationGenerationExtension(session) {
@@ -83,8 +85,9 @@ internal class RAkIIGenerationExtension(
         // Make sure our generation context is available
         if (context == null) return emptyList()
         val clazz = context.owner
+        val classKind = clazz.classKind
         // Skip any non-regular classes
-        if (!clazz.isClass && !clazz.isCompanion) return emptyList()
+        if (!classKind.isClass && !classKind.isObject && !clazz.isCompanion) return emptyList()
         // Check if class implements the Drop interface
         if (!implementsDropInterface(clazz)) return emptyList()
         messageCollector.report(CompilerMessageSeverity.INFO, "Found droppable class ${clazz.classId}")

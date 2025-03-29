@@ -24,15 +24,41 @@ import org.jetbrains.kotlin.name.Name
 internal object RAkIINames {
     val packageName: FqName = FqName("dev.karmakrafts.rakii")
 
-    val dropInterfaceName: Name = Name.identifier("Drop")
-    val dropInterfaceId: ClassId = ClassId(packageName, dropInterfaceName)
+    object Functions {
+        val drop: Name = Name.identifier("drop")
+        val dropping: Name = Name.identifier("dropping")
+        val freeing: Name = Name.identifier("freeing")
+        val copyWithoutValue: Name = Name.identifier("copyWithoutValue")
+        val copyWithValue: Name = Name.identifier("copyWithValue")
+        val dropOnError: Name = Name.identifier("dropOnError")
+        val dropOnAnyError: Name = Name.identifier("dropOnAnyError")
+        val onError: Name = Name.identifier("onError")
+        val onAnyError: Name = Name.identifier("onAnyError")
+        val defaultOnError: Name = Name.identifier("defaultOnError")
+        val nullOnError: Name = Name.identifier("nullOnError")
+    }
 
-    val dropDelegateClassName: Name = Name.identifier("DropDelegate")
-    val dropDelegateClassId: ClassId = ClassId(packageName, dropDelegateClassName)
-    val dropDelegateClassFqName: FqName = dropDelegateClassId.asSingleFqName()
+    val dropping: CallableId = CallableId(packageName, Functions.dropping)
+    val freeing: CallableId = CallableId(packageName, Functions.freeing)
 
-    val dropFunctionName: Name = Name.identifier("drop")
-    val droppingFunctionName: Name = Name.identifier("dropping")
+    object Drop {
+        val name: Name = Name.identifier("Drop")
+        val id: ClassId = ClassId(packageName, name)
+    }
 
-    val delegateDropFunctionId: CallableId = CallableId(dropDelegateClassId, dropFunctionName)
+    object DropDelegate {
+        val name: Name = Name.identifier("DropDelegate")
+        val id: ClassId = ClassId(packageName, name)
+        val fqName: FqName = id.asSingleFqName()
+
+        val drop: CallableId = CallableId(id, Functions.drop)
+        val copyWithoutValue: CallableId = CallableId(id, Functions.copyWithoutValue)
+        val copyWithValue: CallableId = CallableId(id, Functions.copyWithValue)
+        val dropOnError: CallableId = CallableId(id, Functions.dropOnError)
+        val dropOnAnyError: CallableId = CallableId(id, Functions.dropOnAnyError)
+        val onError: CallableId = CallableId(id, Functions.onError)
+        val onAnyError: CallableId = CallableId(id, Functions.onAnyError)
+        val defaultOnError: CallableId = CallableId(id, Functions.defaultOnError)
+        val nullOnError: CallableId = CallableId(id, Functions.nullOnError)
+    }
 }

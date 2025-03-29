@@ -14,26 +14,11 @@
  * limitations under the License.
  */
 
-rootProject.name = "rakii"
+package dev.karmakrafts.rakii.compiler
 
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
-    }
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.classFqName
+
+internal fun IrType.isDropDelegate(): Boolean {
+    return classFqName == RAkIINames.DropDelegate.fqName
 }
-
-@Suppress("UnstableApiUsage")
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
-    }
-}
-
-include("rakii-runtime")
-include("rakii-gradle-plugin")
-include("rakii-compiler-plugin")

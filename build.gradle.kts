@@ -16,18 +16,68 @@
 
 import dev.karmakrafts.conventions.GitLabCI
 import dev.karmakrafts.conventions.configureJava
+import dev.karmakrafts.conventions.setProjectInfo
+import dev.karmakrafts.conventions.defaultDependencyLocking
+import java.net.URI
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 plugins {
     alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.android.library) apply false
     alias(libs.plugins.karmaConventions)
+    signing
+    `maven-publish`
+    alias(libs.plugins.gradleNexus)
 }
 
 group = "dev.karmakrafts.rakii"
 version = GitLabCI.getDefaultVersion(libs.versions.rakii)
 
+allprojects {
+    configureJava(rootProject.libs.versions.java)
+}
+
 subprojects {
+    apply<MavenPublishPlugin>()
+    apply<SigningPlugin>()
+
     group = rootProject.group
     version = rootProject.version
-    configureJava(rootProject.libs.versions.java)
-    with(GitLabCI) { configureDefaults() }
+    if(GitLabCI.isCI) defaultDependencyLocking()
+
+    publishing {
+        setProjectInfo(rootProject.name, "Structured RAII with error handling for Kotlin Multiplatform")
+        with(GitLabCI) { karmaKraftsDefaults() }
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    signing {
+        System.getenv("SIGNING_KEY_ID")?.let { keyId ->
+            useInMemoryPgpKeys( // @formatter:off
+                keyId,
+                System.getenv("SIGNING_PRIVATE_KEY")?.let { encodedKey ->
+                    Base64.decode(encodedKey).decodeToString()
+                },
+                System.getenv("SIGNING_PASSWORD")
+            ) // @formatter:on
+        }
+        sign(publishing.publications)
+    }
+}
+
+nexusPublishing {
+    repositories {
+        System.getenv("OSSRH_USERNAME")?.let { userName ->
+            sonatype {
+                nexusUrl = URI.create("https://central.sonatype.com/publish/staging/maven2")
+                snapshotRepositoryUrl = URI.create("https://central.sonatype.com/repository/maven-snapshots")
+                username = userName
+                password = System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
 }

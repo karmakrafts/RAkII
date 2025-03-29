@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import dev.karmakrafts.conventions.GitLabCI
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.kapt)
@@ -29,33 +27,7 @@ dependencies {
 }
 
 publishing {
-    repositories {
-        with(GitLabCI) { authenticatedPackageRegistry() }
-    }
     publications {
-        create<MavenPublication>("default") {
-            from(components["java"])
-            pom {
-                name = project.name
-                description = "RAII with structured error handling for Kotlin Multiplatform."
-                url = System.getenv("CI_PROJECT_URL")
-                licenses {
-                    license {
-                        name = "Apache License 2.0"
-                        url = "https://www.apache.org/licenses/LICENSE-2.0"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "kitsunealex"
-                        name = "KitsuneAlex"
-                        url = "https://git.karmakrafts.dev/KitsuneAlex"
-                    }
-                }
-                scm {
-                    url = this@pom.url
-                }
-            }
-        }
+        create<MavenPublication>("compilerPlugin")
     }
 }

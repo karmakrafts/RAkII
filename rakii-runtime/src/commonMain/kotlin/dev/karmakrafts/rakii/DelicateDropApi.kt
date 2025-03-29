@@ -14,26 +14,8 @@
  * limitations under the License.
  */
 
-rootProject.name = "rakii"
+package dev.karmakrafts.rakii
 
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
-    }
-}
-
-@Suppress("UnstableApiUsage")
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
-    }
-}
-
-include("rakii-runtime")
-include("rakii-gradle-plugin")
-include("rakii-compiler-plugin")
+@RequiresOptIn(message = "This API is delicate and should be used with caution.")
+@Retention(AnnotationRetention.BINARY)
+annotation class DelicateDropApi

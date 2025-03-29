@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import dev.karmakrafts.conventions.GitLabCI
 import kotlin.io.path.createDirectories
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.div
@@ -59,43 +58,12 @@ gradlePlugin {
         vcsUrl = it
     }
     plugins {
-        create("RAkII Gradle Plugin") {
+        create("gradlePlugin") {
             id = "$group.${rootProject.name}-gradle-plugin"
             implementationClass = "$group.gradle.RAkIIGradlePlugin"
             displayName = "RAkII Gradle Plugin"
             description = "Gradle plugin for applying the RAkII Kotlin compiler plugin"
             tags.addAll("kotlin", "native", "interop", "codegen")
-        }
-    }
-}
-
-publishing {
-    repositories {
-        with(GitLabCI) { authenticatedPackageRegistry() }
-    }
-    publications.configureEach {
-        if (this is MavenPublication) {
-            pom {
-                name = project.name
-                description = "RAII with structured error handling for Kotlin Multiplatform."
-                url = System.getenv("CI_PROJECT_URL")
-                licenses {
-                    license {
-                        name = "Apache License 2.0"
-                        url = "https://www.apache.org/licenses/LICENSE-2.0"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "kitsunealex"
-                        name = "KitsuneAlex"
-                        url = "https://git.karmakrafts.dev/KitsuneAlex"
-                    }
-                }
-                scm {
-                    url = this@pom.url
-                }
-            }
         }
     }
 }

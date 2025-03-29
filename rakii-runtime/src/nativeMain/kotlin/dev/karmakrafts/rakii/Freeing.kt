@@ -14,26 +14,23 @@
  * limitations under the License.
  */
 
-rootProject.name = "rakii"
+package dev.karmakrafts.rakii
 
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
+import kotlinx.cinterop.CVariable
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.alloc
+import kotlinx.cinterop.free
+import kotlinx.cinterop.nativeHeap
+
+@ExperimentalForeignApi
+@IntrinsicDropApi
+inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing(
+    crossinline dropHandler: (TYPE) -> Unit = {}, crossinline initializer: TYPE.() -> Unit
+): DropDelegate<TYPE, OWNER> {
+    return dropping({
+        dropHandler(it)
+        nativeHeap.free(it)
+    }) {
+        nativeHeap.alloc<TYPE>(initializer)
     }
 }
-
-@Suppress("UnstableApiUsage")
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
-    }
-}
-
-include("rakii-runtime")
-include("rakii-gradle-plugin")
-include("rakii-compiler-plugin")

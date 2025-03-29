@@ -20,13 +20,17 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrField
+import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.declarations.createBlockBody
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
-import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
@@ -47,30 +51,23 @@ internal class RAkIIDropLoweringVisitor(
     @OptIn(UnsafeDuringIrConstructionAPI::class)
     private fun findDroppableProperties(declaration: IrClass): List<IrProperty> {
         // Find all delegate properties with a matching backing field type
-        return declaration.properties
-            .filter { it.backingField?.type?.classFqName == RAkIINames.dropDelegateClassFqName }
-            .onEach {
+        return declaration.properties.filter { it.backingField?.type?.isDropDelegate() == true }.onEach {
                 messageCollector.report(
-                    CompilerMessageSeverity.INFO,
-                    "Found droppable property ${it.name} in ${declaration.kotlinFqName}"
+                    CompilerMessageSeverity.INFO, "Found droppable property ${it.name} in ${declaration.kotlinFqName}"
                 )
-            }
-            .toList()
+            }.toList()
     }
 
     private fun createDropCall(field: IrField, declaration: IrSimpleFunction): IrCall {
         return IrCallImpl(
             startOffset = SYNTHETIC_OFFSET,
             endOffset = SYNTHETIC_OFFSET,
-            symbol = pluginContext.referenceFunctions(RAkIINames.delegateDropFunctionId).first(),
+            symbol = pluginContext.referenceFunctions(RAkIINames.DropDelegate.drop).first(),
             type = pluginContext.irBuiltIns.unitType
         ).apply {
             // We are calling drop on the instance stored in the backing field
             dispatchReceiver = IrGetFieldImpl(
-                startOffset = SYNTHETIC_OFFSET,
-                endOffset = SYNTHETIC_OFFSET,
-                symbol = field.symbol,
-                type = field.type
+                startOffset = SYNTHETIC_OFFSET, endOffset = SYNTHETIC_OFFSET, symbol = field.symbol, type = field.type
             ).apply {
                 // We are retrieving the backing field value from the this-reference of the parent class
                 val thisParam = declaration.dispatchReceiverParameter!!
@@ -93,12 +90,10 @@ internal class RAkIIDropLoweringVisitor(
         val clazz = declaration.parentClassOrNull ?: return
         val properties = findDroppableProperties(clazz)
         messageCollector.report(
-            CompilerMessageSeverity.INFO,
-            "Processing drop function for ${declaration.kotlinFqName.asString()}"
+            CompilerMessageSeverity.INFO, "Processing drop function for ${declaration.kotlinFqName.asString()}"
         )
         declaration.body = pluginContext.irFactory.createBlockBody(SYNTHETIC_OFFSET, SYNTHETIC_OFFSET) {
-            statements += properties
-                .mapNotNull { it.backingField }
+            statements += properties.mapNotNull { it.backingField }
                 .reversed() // Properties are always dropped in reverse order to how they're declared
                 .map { createDropCall(it, declaration) }
         }

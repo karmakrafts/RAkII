@@ -30,6 +30,7 @@ import kotlin.jvm.JvmName
  * Overriding the function manually will cause an error in the RAkII compiler.
  */
 interface Drop : AutoCloseable {
+    @IntrinsicDropApi
     @GeneratedDropApi
     fun drop() {
         throw UnsupportedOperationException("RAkII drop function wasn't lowered during IR transformation")

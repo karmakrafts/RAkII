@@ -16,7 +16,13 @@
 
 package dev.karmakrafts.rakii
 
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class DropDelegateTest {
     companion object {
@@ -24,9 +30,15 @@ class DropDelegateTest {
         private const val ERROR_MESSAGE: String = "Oh oh!"
     }
 
+    private object DummyDrop : Drop {
+        @GeneratedDropApi
+        override fun drop() {
+        }
+    }
+
     @Test
     fun `Lazily initialize`() {
-        val delegate = DropDelegate(this, {}) { VALUE }
+        val delegate = DropDelegate(DummyDrop, {}) { VALUE }
         assertNull(delegate.nullableValue)
         assertEquals(VALUE, delegate.value)
         assertNotNull(delegate.nullableValue)
@@ -34,7 +46,7 @@ class DropDelegateTest {
 
     @Test
     fun `Update internal drop state`() {
-        val delegate = DropDelegate(this, {}) { VALUE }
+        val delegate = DropDelegate(DummyDrop, {}) { VALUE }
         assertFalse(delegate.isDropped)
         delegate.drop()
         assertTrue(delegate.isDropped)
@@ -43,7 +55,7 @@ class DropDelegateTest {
     @Test
     fun `Don't invoke drop handler twice on double drop`() {
         var dropCount = 0
-        val delegate = DropDelegate(this, { ++dropCount }) { VALUE }
+        val delegate = DropDelegate(DummyDrop, { ++dropCount }) { VALUE }
         println(delegate.value)
         delegate.drop()
         delegate.drop()
@@ -52,7 +64,7 @@ class DropDelegateTest {
 
     @Test
     fun `Rethrow initialization error`() {
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalStateException(ERROR_MESSAGE)
             VALUE
         }
@@ -63,7 +75,7 @@ class DropDelegateTest {
 
     @Test
     fun `Rethrow drop error`() {
-        val delegate = DropDelegate(this, {
+        val delegate = DropDelegate(DummyDrop, {
             throw IllegalStateException(ERROR_MESSAGE)
         }) { VALUE }
         println(delegate.value)
@@ -75,7 +87,7 @@ class DropDelegateTest {
     @Test
     fun `Don't invoke drop handler without value`() {
         var isDropped = false
-        val delegate = DropDelegate(this, { isDropped = true }) { VALUE }
+        val delegate = DropDelegate(DummyDrop, { isDropped = true }) { VALUE }
         assertFalse(isDropped)
         delegate.drop()
         assertFalse(isDropped)
@@ -84,7 +96,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop handler lazily`() {
         var isDropped = false
-        val delegate = DropDelegate(this, { isDropped = true }) { VALUE }
+        val delegate = DropDelegate(DummyDrop, { isDropped = true }) { VALUE }
         assertFalse(isDropped)
         println(delegate.value)
         delegate.drop()
@@ -94,7 +106,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke error callback for any exception type`() {
         var isHandled = false
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalStateException(ERROR_MESSAGE)
             VALUE
         }.onAnyError { isHandled = true }
@@ -108,7 +120,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke error callback for matching exception type`() {
         var isHandled = false
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalStateException(ERROR_MESSAGE)
             VALUE
         }.onError<IllegalStateException> { isHandled = true }
@@ -122,7 +134,7 @@ class DropDelegateTest {
     @Test
     fun `Don't Invoke error callback for non matching exception type`() {
         var isHandled = false
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
             VALUE
         }.onError<IllegalStateException> { isHandled = true }
@@ -136,7 +148,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop chain for any exception type`() {
         var isDropped = false
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
             VALUE
         }
@@ -153,7 +165,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop chain for matching exception type`() {
         var isDropped = false
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
             VALUE
         }
@@ -170,7 +182,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop chain for non matching exception type`() {
         var isDropped = false
-        val delegate = DropDelegate(this, {}) {
+        val delegate = DropDelegate(DummyDrop, {}) {
             throw IllegalStateException(ERROR_MESSAGE)
             VALUE
         }

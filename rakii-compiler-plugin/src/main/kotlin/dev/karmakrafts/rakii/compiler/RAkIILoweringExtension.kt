@@ -24,12 +24,14 @@ import org.jetbrains.kotlin.ir.visitors.acceptVoid
 
 internal class RAkIILoweringExtension : IrGenerationExtension {
     override fun generate(
-        moduleFragment: IrModuleFragment,
-        pluginContext: IrPluginContext
+        moduleFragment: IrModuleFragment, pluginContext: IrPluginContext
     ) {
         pluginContext.messageCollector.report(
-            CompilerMessageSeverity.INFO,
-            "Running RAkII IR lowering pass for ${moduleFragment.name}"
+            CompilerMessageSeverity.INFO, "Running RAkII IR analyzer pass for ${moduleFragment.name}"
+        )
+        moduleFragment.acceptVoid(RAkIIAnalyzingVisitor(pluginContext))
+        pluginContext.messageCollector.report(
+            CompilerMessageSeverity.INFO, "Running RAkII IR lowering pass for ${moduleFragment.name}"
         )
         moduleFragment.acceptVoid(RAkIIDropLoweringVisitor(pluginContext))
     }

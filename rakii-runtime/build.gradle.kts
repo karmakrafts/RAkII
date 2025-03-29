@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import dev.karmakrafts.conventions.GitLabCI
 import java.time.ZonedDateTime
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.dokka)
+    signing
     `maven-publish`
 }
 
@@ -29,12 +30,22 @@ kotlin {
     linuxArm64()
     macosX64()
     macosArm64()
+    androidTarget {
+        publishLibraryVariants("release")
+    }
     androidNativeArm32()
     androidNativeArm64()
     androidNativeX64()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    tvosArm64()
+    tvosX64()
+    tvosSimulatorArm64()
+    watchosArm32()
+    watchosArm64()
+    watchosX64()
+    watchosSimulatorArm64()
     jvm()
     js {
         browser()
@@ -48,6 +59,14 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+    }
+}
+
+android {
+    namespace = "$group.${rootProject.name}"
+    compileSdk = libs.versions.androidCompileSDK.get().toInt()
+    defaultConfig {
+        minSdk = libs.versions.androidMinimalSDK.get().toInt()
     }
 }
 
@@ -73,38 +92,6 @@ tasks {
             mustRunAfter(dokkaJar)
             from(zipTree(dokkaJar.get().outputs.files.first()))
             into(docsDir)
-        }
-    }
-}
-
-publishing {
-    repositories {
-        with(GitLabCI) { authenticatedPackageRegistry() }
-    }
-    publications.configureEach {
-        if (this is MavenPublication) {
-            artifact(dokkaJar)
-            pom {
-                name = project.name
-                description = "RAII with structured error handling for Kotlin Multiplatform."
-                url = System.getenv("CI_PROJECT_URL")
-                licenses {
-                    license {
-                        name = "Apache License 2.0"
-                        url = "https://www.apache.org/licenses/LICENSE-2.0"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "kitsunealex"
-                        name = "KitsuneAlex"
-                        url = "https://git.karmakrafts.dev/KitsuneAlex"
-                    }
-                }
-                scm {
-                    url = this@pom.url
-                }
-            }
         }
     }
 }

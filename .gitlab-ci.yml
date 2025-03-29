@@ -122,7 +122,7 @@ publish:artifacts:
   before_script:
     - export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
   script:
-    - ./gradlew clean publish --stackrace
+    - ./gradlew clean publish --stacktrace
   tags:
     - macos
 

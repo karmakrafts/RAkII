@@ -1,5 +1,11 @@
 # RAkII
 
+[![](https://git.karmakrafts.dev/kk/rakii/badges/master/pipeline.svg)](https://git.karmakrafts.dev/kk/rakii/-/pipelines)
+[![](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Fpublish%2Fstaging%2Fmaven2%2Fdev%2Fkarmakrafts%2Frakii%2Frakii-runtime%2Fmaven-metadata.xml
+)](https://git.karmakrafts.dev/kk/rakii/-/packages)
+[![](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fdev%2Fkarmakrafts%2Frakii%2Frakii-runtime%2Fmaven-metadata.xml
+)](https://git.karmakrafts.dev/kk/rakii/-/packages)
+
 RAkII (or Kotlin RAII) is a lightweight runtime library and compiler plugin
 which allows using structured RAII with support for error handling in Kotlin Multiplatform.
 

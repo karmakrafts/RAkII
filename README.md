@@ -19,19 +19,21 @@ In your `settings.gradle.kts`:
 ```kotlin
 pluginManagement {
     repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        // For snapshot versions
+        // Snapshots are available from the Karma Krafts repository or Maven Central Snapshots
         maven("https://files.karmakrafts.dev/maven")
+        maven("https://central.sonatype.com/repository/maven-snapshots")
+        // Releases are mirrored to the central M2 repository
+        mavenCentral()
     }
 }
 
 dependencyResolutionManagement {
-    @Suppress("UnstableApiUsage")
     repositories {
-        mavenCentral()
-        // For snapshot versions
+        // Snapshots are available from the Karma Krafts repository or Maven Central Snapshots
         maven("https://files.karmakrafts.dev/maven")
+        maven("https://central.sonatype.com/repository/maven-snapshots")
+        // Releases are mirrored to the central M2 repository
+        mavenCentral()
     }
 }
 ```

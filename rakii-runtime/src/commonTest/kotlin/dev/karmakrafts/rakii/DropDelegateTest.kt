@@ -56,7 +56,7 @@ class DropDelegateTest {
     fun `Don't invoke drop handler twice on double drop`() {
         var dropCount = 0
         val delegate = DropDelegate(DummyDrop, { ++dropCount }) { VALUE }
-        println(delegate.value)
+        blackHole(delegate.value)
         delegate.drop()
         delegate.drop()
         assertEquals(1, dropCount)
@@ -69,7 +69,7 @@ class DropDelegateTest {
             VALUE
         }
         assertFailsWith<DropInitializationException>(ERROR_MESSAGE) {
-            println(delegate.value)
+            blackHole(delegate.value)
         }
     }
 
@@ -78,7 +78,7 @@ class DropDelegateTest {
         val delegate = DropDelegate(DummyDrop, {
             throw IllegalStateException(ERROR_MESSAGE)
         }) { VALUE }
-        println(delegate.value)
+        blackHole(delegate.value)
         assertFailsWith<DropException>(ERROR_MESSAGE) {
             delegate.drop()
         }
@@ -98,7 +98,7 @@ class DropDelegateTest {
         var isDropped = false
         val delegate = DropDelegate(DummyDrop, { isDropped = true }) { VALUE }
         assertFalse(isDropped)
-        println(delegate.value)
+        blackHole(delegate.value)
         delegate.drop()
         assertTrue(isDropped)
     }

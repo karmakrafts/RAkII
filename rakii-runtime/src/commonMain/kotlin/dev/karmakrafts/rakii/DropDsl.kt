@@ -16,6 +16,10 @@
 
 package dev.karmakrafts.rakii
 
+/**
+ * Marker annotation for drop API DSL container implementations
+ * such as [DroppingScope].
+ */
 @DslMarker
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.CLASS)

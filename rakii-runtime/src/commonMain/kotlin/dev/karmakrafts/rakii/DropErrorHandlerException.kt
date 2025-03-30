@@ -16,4 +16,8 @@
 
 package dev.karmakrafts.rakii
 
-class DropErrorHandlerException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
+/**
+ * An exception type which may be raised by a [DropDelegate] instance
+ * when one of its error handlers raise an exception.
+ */
+class DropErrorHandlerException(message: String, cause: Throwable? = null) : DropException(message, cause)

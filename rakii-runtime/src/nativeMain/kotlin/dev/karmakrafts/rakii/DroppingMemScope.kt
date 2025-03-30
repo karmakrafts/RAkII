@@ -24,14 +24,27 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-// TODO: document this
+/**
+ * A delegating implementation of [NativePlacement]
+ * which also provides the drop DSL at the same time.
+ *
+ * @see [DroppingScope] and [MemScope].
+ * @param scope The [MemScope] instance delegate of this dropping memory scope.
+ */
 @ExperimentalForeignApi
 @DropDsl
 class DroppingMemScope @PublishedApi internal constructor(
     private val scope: MemScope
 ) : DroppingScope(), NativePlacement by scope
 
-// TODO: document this
+/**
+ * Creates a deferring memory scope which provides the
+ * [NativePlacement] API and drop DSL at the same time.
+ *
+ * @see [deferring] and [memScoped].
+ * @param scope The deferred memory scope to invoke.
+ * @return The value returned from within the given scope.
+ */
 @ExperimentalForeignApi
 @IntrinsicDropApi
 @OptIn(ExperimentalContracts::class)

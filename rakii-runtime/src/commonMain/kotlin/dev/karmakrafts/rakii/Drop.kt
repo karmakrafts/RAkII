@@ -25,11 +25,14 @@ import kotlin.jvm.JvmName
  * Droppable objects may be used like regular [AutoCloseable] objects,
  * except that they also provide a generated [drop] function, which
  * should never be invoked directly and which is used internally.
- *
- * Also, [drop] should **NEVER** be overridden manually, hence the required opt-in.
- * Overriding the function manually will cause an error in the RAkII compiler.
  */
 interface Drop : AutoCloseable {
+    /**
+     * Drop all droppable member fields of the class which
+     * implements this interface/trait.
+     * **This should not be overridden unless the immplementing
+     * class is marked with the [SkipDropTransforms] annotation!**
+     */
     @IntrinsicDropApi
     @GeneratedDropApi
     fun drop() {

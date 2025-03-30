@@ -22,6 +22,16 @@ import kotlinx.cinterop.alloc
 import kotlinx.cinterop.free
 import kotlinx.cinterop.nativeHeap
 
+/**
+ * Creates a new [DropDelegate] instance owned by the calling class [OWNER].
+ * This leaves the delegate uninitialized until the first time it is referenced.
+ *
+ * @param TYPE The C value type of the delegate.
+ * @param OWNER The type of the class which contains the delegate field.
+ * @param dropHandler A callback which gets invoked when the given delegate is dropped.
+ * @param initializer A callback which is invoked for initializing the delegate value when it's used.
+ * @return A new [DropDelegate] instance associated with this class.
+ */
 @ExperimentalForeignApi
 @IntrinsicDropApi
 inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @formatter:off

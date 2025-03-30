@@ -8,6 +8,16 @@ import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 import kotlin.reflect.KProperty1
 
+/**
+ * A delegate value holder for droppable values
+ * which provides a runtime implementation for drop-chains and error handlers.
+ *
+ * @param TYPE The value type of the drop delegate.
+ * @param OWNER The type of the class containing the delegate field.
+ *  This can either be a user defined class when implementing [Drop],
+ *  or it can be [DroppingScope.Owner] if the delegate was created
+ *  within a [deferring] scope.
+ */
 @OptIn(ExperimentalAtomicApi::class)
 class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
     @PublishedApi internal val instance: OWNER,

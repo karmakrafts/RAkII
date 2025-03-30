@@ -21,7 +21,10 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-// TODO: document this
+/**
+ * A dropping scope instance which provides a runtime implementation
+ * for handling end-of-scope dropping using the existing [DropDelegate] API.
+ */
 @DropDsl
 open class DroppingScope @PublishedApi internal constructor() {
     @SkipDropTransforms
@@ -37,12 +40,26 @@ open class DroppingScope @PublishedApi internal constructor() {
     @Suppress("NOTHING_TO_INLINE")
     internal inline fun dropAll() = delegates.forEach { it() }
 
+    /**
+     * Defers the given code block until the end of the function scope.
+     * That is, every possible code-path leading to a return.
+     *
+     * @param scope The scope to be run before every return-point in the scope.
+     */
     @IntrinsicDropApi
     fun defer(scope: () -> Unit) {
         delegates += scope
     }
 
-    // TODO: document this
+    /**
+     * Defers the drop of the given value until the end of the function scope.
+     * That is, every possible code-path leading to a return.
+     *
+     * @param T The value type of the delegate.
+     * @param dropHandler A callback which gets invoked when the given delegate is dropped.
+     * @param initializer A factory which is invoked for lazily creating the delegate value when it's used.
+     * @return A new [DropDelegate] instance associated with the current scope.
+     */
     @IntrinsicDropApi
     inline fun <reified T : Any> dropping( // @formatter:off
         noinline dropHandler: (T) -> Unit,
@@ -53,7 +70,16 @@ open class DroppingScope @PublishedApi internal constructor() {
         return delegate
     }
 
-    // TODO: document this
+    /**
+     * Defers the drop of the given value until the end of the function scope.
+     * That is, every possible code-path leading to a return.
+     * The drop of this variable will invoke the [AutoCloseable.close] function
+     * of the value if it was initialized until that point in execution.
+     *
+     * @param T The value type of the delegate.
+     * @param initializer A factory which is invoked for lazily creating the delegate value when it's used.
+     * @return A new [DropDelegate] instance associated with the current scope.
+     */
     @IntrinsicDropApi
     inline fun <reified T : AutoCloseable> dropping( // @formatter:off
         noinline initializer: () -> T
@@ -64,14 +90,24 @@ open class DroppingScope @PublishedApi internal constructor() {
     }
 }
 
-// TODO: document this
+/**
+ * Creates a new deferring scope which allows locally auto-dropping
+ * values and using guards.
+ *
+ * @param scope The deferring scope.
+ * @return The value returned within the deferring scope if no exception
+ *  was raised.
+ */
 @OptIn(ExperimentalContracts::class)
 inline fun <reified R> deferring(scope: DroppingScope.() -> R): R {
     contract {
         callsInPlace(scope, InvocationKind.EXACTLY_ONCE)
     }
-    val rtScope = DroppingScope()
-    val result = rtScope.scope()
-    rtScope.dropAll()
-    return result
+    val scopeInstance = DroppingScope()
+    return try {
+        scopeInstance.scope()
+    }
+    finally {
+        scopeInstance.dropAll()
+    }
 }

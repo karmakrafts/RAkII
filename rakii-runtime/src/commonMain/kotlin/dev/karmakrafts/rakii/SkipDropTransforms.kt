@@ -16,7 +16,12 @@
 
 package dev.karmakrafts.rakii
 
-// TODO: document this
+/**
+ * A marker annotation for the RAkII compiler, which indicates
+ * that the given class or function shouldn't be transformed.
+ * This can be useful in situations where a manual implementation
+ * of the [Drop] interface must be provided.
+ */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 annotation class SkipDropTransforms

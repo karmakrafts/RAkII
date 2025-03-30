@@ -16,5 +16,8 @@
 
 package dev.karmakrafts.rakii
 
-// Used for internally propagating initializer exceptions when creating a new drop delegate
-class DropInitializationException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
+/**
+ * This exception type is mainly used for internally propagating
+ * initializer exceptions in a [DropDelegate] instance.
+ */
+class DropInitializationException(message: String, cause: Throwable? = null) : DropException(message, cause)

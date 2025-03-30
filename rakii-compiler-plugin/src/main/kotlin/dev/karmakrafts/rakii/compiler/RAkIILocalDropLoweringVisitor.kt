@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.expressions.IrBlockBody
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 
@@ -36,5 +37,6 @@ internal class RAkIILocalDropLoweringVisitor(
         super.visitSimpleFunction(declaration)
         // If the function is marked with @SkipDropTransforms, skip it..
         if (declaration.shouldSkipDropTransforms()) return
+        val body = declaration.body as? IrBlockBody ?: return
     }
 }

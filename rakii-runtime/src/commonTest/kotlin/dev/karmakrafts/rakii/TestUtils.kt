@@ -16,12 +16,4 @@
 
 package dev.karmakrafts.rakii
 
-/**
- * A base exception type for all [DropDelegate] related
- * functions.
- * This exception can either be raised directly when
- * invoking the drop-chain of a [DropDelegate] instance,
- * or indirectly when a [DropErrorHandlerException] or [DropInitializationException]
- * is raised.
- */
-open class DropException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
+internal fun blackHole(value: Any) {}

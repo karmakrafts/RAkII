@@ -35,7 +35,7 @@ class DroppingMemScope @PublishedApi internal constructor(
 @ExperimentalForeignApi
 @IntrinsicDropApi
 @OptIn(ExperimentalContracts::class)
-inline fun <reified R> deferringMemScoped(noinline scope: DroppingMemScope.() -> R): R {
+inline fun <reified R> deferringMemScoped(scope: DroppingMemScope.() -> R): R {
     contract {
         callsInPlace(scope, InvocationKind.EXACTLY_ONCE)
     }

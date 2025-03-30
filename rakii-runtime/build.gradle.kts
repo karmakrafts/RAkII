@@ -54,6 +54,12 @@ kotlin {
     applyDefaultHierarchyTemplate()
     withSourcesJar(true)
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.stately.common)
+                implementation(libs.stately.collections)
+            }
+        }
         commonTest {
             dependencies {
                 implementation(kotlin("test"))

@@ -24,7 +24,7 @@ import kotlinx.cinterop.nativeHeap
 
 @ExperimentalForeignApi
 @IntrinsicDropApi
-inline fun <reified TYPE : CVariable, OWNER : Drop> OWNER.freeing( // @formatter:off
+inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @formatter:off
     crossinline dropHandler: (TYPE) -> Unit = {},
     crossinline initializer: TYPE.() -> Unit
 ): DropDelegate<TYPE, OWNER> { // @formatter:on

@@ -16,6 +16,7 @@
 
 package dev.karmakrafts.rakii
 
+import co.touchlab.stately.collections.SharedLinkedList
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -30,7 +31,7 @@ open class DroppingScope @PublishedApi internal constructor() {
     }
 
     @PublishedApi
-    internal val delegates: ArrayList<() -> Unit> = ArrayList()
+    internal val delegates: SharedLinkedList<() -> Unit> = SharedLinkedList()
 
     fun dropAll() = delegates.forEach { it() }
 
@@ -41,9 +42,9 @@ open class DroppingScope @PublishedApi internal constructor() {
 
     // TODO: document this
     @IntrinsicDropApi
-    fun <T : Any> dropping( // @formatter:off
-        dropHandler: (T) -> Unit,
-        initializer: () -> T
+    inline fun <reified T : Any> dropping( // @formatter:off
+        noinline dropHandler: (T) -> Unit,
+        noinline initializer: () -> T
     ): DropDelegate<T, Owner> { // @formatter:on
         val delegate = DropDelegate(Owner, dropHandler, initializer)
         delegates += delegate::drop
@@ -52,8 +53,8 @@ open class DroppingScope @PublishedApi internal constructor() {
 
     // TODO: document this
     @IntrinsicDropApi
-    fun <T : AutoCloseable> dropping( // @formatter:off
-        initializer: () -> T
+    inline fun <reified T : AutoCloseable> dropping( // @formatter:off
+        noinline initializer: () -> T
     ): DropDelegate<T, Owner> { // @formatter:on
         val delegate = DropDelegate(Owner, AutoCloseable::close, initializer)
         delegates += delegate::drop
@@ -63,7 +64,7 @@ open class DroppingScope @PublishedApi internal constructor() {
 
 // TODO: document this
 @OptIn(ExperimentalContracts::class)
-inline fun <reified R> deferring(noinline scope: DroppingScope.() -> R): R {
+inline fun <reified R> deferring(scope: DroppingScope.() -> R): R {
     contract {
         callsInPlace(scope, InvocationKind.EXACTLY_ONCE)
     }

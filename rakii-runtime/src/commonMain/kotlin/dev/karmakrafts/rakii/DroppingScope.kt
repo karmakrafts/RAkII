@@ -33,7 +33,9 @@ open class DroppingScope @PublishedApi internal constructor() {
     @PublishedApi
     internal val delegates: SharedLinkedList<() -> Unit> = SharedLinkedList()
 
-    fun dropAll() = delegates.forEach { it() }
+    @PublishedApi
+    @Suppress("NOTHING_TO_INLINE")
+    internal inline fun dropAll() = delegates.forEach { it() }
 
     @IntrinsicDropApi
     fun defer(scope: () -> Unit) {

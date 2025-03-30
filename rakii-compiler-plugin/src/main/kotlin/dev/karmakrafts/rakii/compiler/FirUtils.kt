@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.kapt)
-    `maven-publish`
-}
+package dev.karmakrafts.rakii.compiler
 
-dependencies {
-    compileOnly(libs.kotlin.compiler.embeddable)
-    compileOnly(libs.autoService)
-    kapt(libs.autoService)
-}
+import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.declarations.hasAnnotation
+import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 
-publishing {
-    publications {
-        create<MavenPublication>("compilerPlugin") {
-            from(components["java"])
-        }
-    }
+internal fun FirClassSymbol<*>.shouldSkipDropTransforms(session: FirSession): Boolean {
+    return hasAnnotation(RAkIINames.SkipDropTransforms.id, session)
 }

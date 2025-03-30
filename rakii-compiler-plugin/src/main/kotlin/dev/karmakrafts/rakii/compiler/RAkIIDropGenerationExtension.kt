@@ -54,7 +54,7 @@ internal class RAkIIDropGenerationExtension(
         classSymbol: FirClassSymbol<*>, context: MemberGenerationContext
     ): Set<Name> {
         // If the class implements the Drop interface, supply a drop function
-        if (implementsDropInterface(classSymbol)) {
+        if (implementsDropInterface(classSymbol) && !classSymbol.shouldSkipDropTransforms(session)) {
             return setOf(RAkIINames.Functions.drop)
         }
         return emptySet()
@@ -85,7 +85,7 @@ internal class RAkIIDropGenerationExtension(
         // Skip any non-regular classes
         if (!classKind.isClass && !classKind.isObject && !clazz.isCompanion) return emptyList()
         // Check if class implements the Drop interface
-        if (!implementsDropInterface(clazz)) return emptyList()
+        if (!implementsDropInterface(clazz) || clazz.shouldSkipDropTransforms(session)) return emptyList()
         messageCollector.report(CompilerMessageSeverity.INFO, "Found droppable class ${clazz.classId}")
         // Generate drop function definition
         return listOf(generateDropFunction(clazz).symbol)

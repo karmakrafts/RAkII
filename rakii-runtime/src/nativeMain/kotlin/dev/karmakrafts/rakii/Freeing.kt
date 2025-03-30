@@ -24,12 +24,13 @@ import kotlinx.cinterop.nativeHeap
 
 @ExperimentalForeignApi
 @IntrinsicDropApi
-inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing(
-    crossinline dropHandler: (TYPE) -> Unit = {}, crossinline initializer: TYPE.() -> Unit
-): DropDelegate<TYPE, OWNER> {
-    return dropping({
-        dropHandler(it)
-        nativeHeap.free(it)
+inline fun <reified TYPE : CVariable, OWNER : Drop> OWNER.freeing( // @formatter:off
+    crossinline dropHandler: (TYPE) -> Unit = {},
+    crossinline initializer: TYPE.() -> Unit
+): DropDelegate<TYPE, OWNER> { // @formatter:on
+    return dropping({ value ->
+        dropHandler(value)
+        nativeHeap.free(value)
     }) {
         nativeHeap.alloc<TYPE>(initializer)
     }

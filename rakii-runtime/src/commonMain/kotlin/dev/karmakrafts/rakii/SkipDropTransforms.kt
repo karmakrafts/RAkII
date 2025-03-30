@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.kapt)
-    `maven-publish`
-}
+package dev.karmakrafts.rakii
 
-dependencies {
-    compileOnly(libs.kotlin.compiler.embeddable)
-    compileOnly(libs.autoService)
-    kapt(libs.autoService)
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("compilerPlugin") {
-            from(components["java"])
-        }
-    }
-}
+// TODO: document this
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+annotation class SkipDropTransforms

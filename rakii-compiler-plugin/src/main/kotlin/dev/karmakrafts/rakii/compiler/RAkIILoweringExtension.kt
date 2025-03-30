@@ -34,5 +34,6 @@ internal class RAkIILoweringExtension : IrGenerationExtension {
             CompilerMessageSeverity.INFO, "Running RAkII IR lowering pass for ${moduleFragment.name}"
         )
         moduleFragment.acceptVoid(RAkIIDropLoweringVisitor(pluginContext))
+        moduleFragment.acceptVoid(RAkIILocalDropLoweringVisitor(pluginContext))
     }
 }

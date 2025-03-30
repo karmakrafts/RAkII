@@ -16,6 +16,7 @@
 
 package dev.karmakrafts.rakii
 
-@RequiresOptIn(message = "This API is delicate and should be used with caution.")
+@DslMarker
 @Retention(AnnotationRetention.BINARY)
-annotation class DelicateDropApi
+@Target(AnnotationTarget.CLASS)
+annotation class DropDsl

@@ -16,9 +16,20 @@
 
 package dev.karmakrafts.rakii.compiler
 
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.util.hasAnnotation
 
 internal fun IrType.isDropDelegate(): Boolean {
     return classFqName == RAkIINames.DropDelegate.fqName
+}
+
+internal fun IrClass.shouldSkipDropTransforms(): Boolean {
+    return hasAnnotation(RAkIINames.SkipDropTransforms.id)
+}
+
+internal fun IrSimpleFunction.shouldSkipDropTransforms(): Boolean {
+    return hasAnnotation(RAkIINames.SkipDropTransforms.id)
 }

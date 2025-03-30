@@ -1,16 +1,14 @@
 package dev.karmakrafts.rakii
 
-import kotlin.contracts.ExperimentalContracts
-
-@OptIn(ExperimentalContracts::class)
 @IntrinsicDropApi
-inline fun <reified TYPE : Any, reified OWNER : Drop> OWNER.dropping(
-    noinline dropHandler: (TYPE) -> Unit, noinline initializer: () -> TYPE
+fun <TYPE : Any, OWNER : Drop> OWNER.dropping(
+    dropHandler: (TYPE) -> Unit,
+    initializer: () -> TYPE
 ): DropDelegate<TYPE, OWNER> {
     return DropDelegate(this, dropHandler, initializer)
 }
 
 @IntrinsicDropApi
-inline fun <reified TYPE : AutoCloseable, reified OWNER : Drop> OWNER.dropping(
-    noinline initializer: () -> TYPE
+fun <TYPE : AutoCloseable, OWNER : Drop> OWNER.dropping(
+    initializer: () -> TYPE
 ): DropDelegate<TYPE, OWNER> = dropping(AutoCloseable::close, initializer)

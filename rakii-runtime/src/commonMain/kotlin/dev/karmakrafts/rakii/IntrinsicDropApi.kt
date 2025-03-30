@@ -22,6 +22,5 @@ package dev.karmakrafts.rakii
  * This is mainly as a visual indicator for those who want to
  * work on the compiler plugin themselves.
  */
-@DslMarker
 @Retention(AnnotationRetention.BINARY)
 annotation class IntrinsicDropApi

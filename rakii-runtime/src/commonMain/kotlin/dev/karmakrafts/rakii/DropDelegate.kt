@@ -172,7 +172,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @return This property.
      */
     @IntrinsicDropApi
-    @DelicateDropApi
     inline fun <reified X : Throwable> dropOnError(
         property: KProperty0<AutoCloseable?>
     ): DropDelegate<TYPE, OWNER> {
@@ -202,7 +201,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @return This property.
      */
     @IntrinsicDropApi
-    @DelicateDropApi
     fun dropOnAnyError(
         property: KProperty0<AutoCloseable?>
     ): DropDelegate<TYPE, OWNER> = dropOnError<Throwable>(property)

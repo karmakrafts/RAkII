@@ -52,14 +52,14 @@ internal class RAkIIDropLoweringVisitor(
     private fun findDroppableProperties(declaration: IrClass): List<IrProperty> {
         // Find all delegate properties with a matching backing field type
         return declaration.properties.filter { it.backingField?.type?.isDropDelegate() == true }.onEach {
-                messageCollector.report(
-                    CompilerMessageSeverity.INFO, "Found droppable property ${it.name} in ${declaration.kotlinFqName}"
-                )
-            }.toList()
+            messageCollector.report(
+                CompilerMessageSeverity.INFO, "Found droppable property ${it.name} in ${declaration.kotlinFqName}"
+            )
+        }.toList()
     }
 
     private fun createDropCall(field: IrField, declaration: IrSimpleFunction): IrCall {
-        return IrCallImpl(
+        return IrCallImpl( // @formatter:off
             startOffset = SYNTHETIC_OFFSET,
             endOffset = SYNTHETIC_OFFSET,
             symbol = pluginContext.referenceFunctions(RAkIINames.DropDelegate.drop).first(),
@@ -67,7 +67,10 @@ internal class RAkIIDropLoweringVisitor(
         ).apply {
             // We are calling drop on the instance stored in the backing field
             dispatchReceiver = IrGetFieldImpl(
-                startOffset = SYNTHETIC_OFFSET, endOffset = SYNTHETIC_OFFSET, symbol = field.symbol, type = field.type
+                startOffset = SYNTHETIC_OFFSET,
+                endOffset = SYNTHETIC_OFFSET,
+                symbol = field.symbol,
+                type = field.type
             ).apply {
                 // We are retrieving the backing field value from the this-reference of the parent class
                 val thisParam = declaration.dispatchReceiverParameter!!
@@ -78,7 +81,7 @@ internal class RAkIIDropLoweringVisitor(
                     symbol = thisParam.symbol
                 )
             }
-        }
+        } // @formatter:on
     }
 
     override fun visitSimpleFunction(declaration: IrSimpleFunction) {
@@ -88,6 +91,8 @@ internal class RAkIIDropLoweringVisitor(
         if (origin !is IrDeclarationOrigin.GeneratedByPlugin || origin.pluginKey != RAkIIDropGenerationExtension.Key) return
         // Generate the body for our drop function
         val clazz = declaration.parentClassOrNull ?: return
+        // Skip if class is marked with @SkipDropTransforms
+        if (clazz.shouldSkipDropTransforms()) return
         val properties = findDroppableProperties(clazz)
         messageCollector.report(
             CompilerMessageSeverity.INFO, "Processing drop function for ${declaration.kotlinFqName.asString()}"

@@ -41,6 +41,26 @@ internal object RAkIINames {
     val dropping: CallableId = CallableId(packageName, Functions.dropping)
     val freeing: CallableId = CallableId(packageName, Functions.freeing)
 
+    object DroppingScope {
+        val name: Name = Name.identifier("DroppingScope")
+        val id: ClassId = ClassId(packageName, name)
+    }
+
+    object RTDroppingScope {
+        val name: Name = Name.identifier("RTDroppingScope")
+        val id: ClassId = ClassId(packageName, name)
+    }
+
+    object NoopDroppingScope {
+        val name: Name = Name.identifier("NoopDroppingScope")
+        val id: ClassId = ClassId(packageName, name)
+    }
+
+    object SkipDropTransforms {
+        val name: Name = Name.identifier("SkipDropTransforms")
+        val id: ClassId = ClassId(packageName, name)
+    }
+
     object Drop {
         val name: Name = Name.identifier("Drop")
         val id: ClassId = ClassId(packageName, name)

@@ -11,13 +11,13 @@ which allows using structured RAII with support for error handling in Kotlin Mul
 
 RAII is a concept commonly known from native languages such as C++ and Rust,
 used for managing the lifetime of memory implicitly.  
-However, since Cleaners are not suitable for managing micro-allocations in 
+However, since Cleaners are not suitable for managing micro-allocations in
 a granular manner in Kotlin, this library can be employed to reduce potential for
 common errors, resource leaks and double-frees.
 
 ### How to configure it
 
-Simply add the required repositories to your build configuration, apply the 
+Simply add the required repositories to your build configuration, apply the
 Gradle plugin and add a dependency on the runtime:
 
 In your `settings.gradle.kts`:
@@ -68,21 +68,29 @@ kotlin {
 
 ```kotlin
 import dev.karmakrafts.rakii.Drop
+import dev.karmakrafts.rakii.deferring
 
 class Foo : Drop {
-    fun doTheThing() { 
+    fun doTheThing() {
         println("I am doing the thing!")
     }
 }
 
 class Bar : Drop {
     val foo1 by dropping(::Foo)
+
     // When the initialization of foo2 fails, foo1 will be dropped immediately
     val foo2 by dropping(::Foo).dropOnAnyError(Bar::foo1)
-    
+
     fun doTheThings() {
         foo1.doTheThing()
         foo2.doTheThing()
+    }
+    
+    fun helloWorld() = deferring {
+        // Tied to the surrounding deferring scope
+        val foo3 by dropping(::Foo)
+        foo3.doTheThing()
     }
 }
 
@@ -91,6 +99,43 @@ fun main() {
         // Normally use Bar and its contained Foo instance
         // Once the use-scope ends, Foo is dropped and Bar is dropped afterward
         it.doTheThings()
+        it.helloWorld()
     }
 }
 ```
+
+### Performance implications
+
+The RAkII compiler relies on the fact, that it can fall back to the runtime implementation  
+when no optimization is applicable for a certain case.  
+This means that certain usages of RAII constructs can employ a certain runtime overhead,  
+which may not always be desirable.
+
+Take the following use cases of a `deferring` scope as an example:
+
+```kotlin
+import dev.karmakrafts.rakii.deferring
+
+fun test(closure1: () -> Unit, closure2: () -> Unit): String = deferring {
+    // Can be reached with compiler optimization
+    defer { println("HELLO WORLD!") }
+    // Cannot be reached with compiler optimization
+    defer(closure1)
+    fun test2(): DropDelegate<String, DroppingScope.Owner> {
+        // Cannot be reached with compiler optimization
+        defer { println("HELLO WORLD!") }
+        closure2()
+        // Cannot be reached with compiler optimization
+        return dropping(::println) { "Testing" }
+    }
+    // Cannot be reached with compiler optimization
+    val value by test2()
+    // Can be reached with compiler optimization
+    val value2 by dropping(::println) { "!!!" }
+    value + value2
+}
+```
+
+As the above example illustrates as a fact:  
+If the `DroppingScope` instance is implicitly captured, compiler optimizations may not apply.  
+There is many more edge cases which are handled by the runtime due to complexity constraints in the compiler.

@@ -1,4 +1,5 @@
-import dev.karmakrafts.rakii.deferring
+package dev.karmakrafts.rakii
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -23,7 +24,7 @@ import kotlin.test.assertTrue
 
 class DeferringTest {
     companion object {
-        const val VALUE: String = "HELLORLD"
+        private const val VALUE: String = "HELLORLD"
     }
 
     @Test

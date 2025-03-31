@@ -16,37 +16,43 @@
 
 package dev.karmakrafts.rakii
 
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.NativePtr
+import kotlinx.cinterop.UIntVar
+import kotlinx.cinterop.value
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class DropDelegateTest {
+@OptIn(ExperimentalForeignApi::class)
+@SkipDropTransforms
+class FreeingTest : Drop {
     companion object {
-        private const val VALUE: String = "Hello, World!"
+        private const val VALUE: UInt = 0xDEADBEEFU
         private const val ERROR_MESSAGE: String = "Oh oh!"
     }
 
-    private object DummyDrop : Drop {
-        @GeneratedDropApi
-        override fun drop() {
-        }
-    }
+    @GeneratedDropApi
+    override fun drop() = Unit
 
     @Test
     fun `Lazily initialize`() {
-        val delegate = DropDelegate(DummyDrop, {}) { VALUE }
+        val delegate = freeing<UIntVar, FreeingTest> { value = VALUE }
         assertNull(delegate.nullableValue)
-        assertEquals(VALUE, delegate.value)
+        assertNotEquals(NativePtr.NULL, delegate.value.rawPtr)
+        assertEquals(VALUE, delegate.value.value)
         assertNotNull(delegate.nullableValue)
+        delegate.drop()
     }
 
     @Test
     fun `Update internal drop state`() {
-        val delegate = DropDelegate(DummyDrop, {}) { VALUE }
+        val delegate = freeing<UIntVar, FreeingTest> { value = VALUE }
         assertFalse(delegate.isDropped)
         assertNull(delegate.nullableValue)
         delegate.drop()
@@ -57,7 +63,7 @@ class DropDelegateTest {
     @Test
     fun `Don't invoke drop handler twice on double drop`() {
         var dropCount = 0
-        val delegate = DropDelegate(DummyDrop, { ++dropCount }) { VALUE }
+        val delegate = freeing<UIntVar, FreeingTest>({ ++dropCount }) { value = VALUE }
         blackHole(delegate.value)
         delegate.drop()
         assertNull(delegate.nullableValue)
@@ -67,22 +73,10 @@ class DropDelegateTest {
     }
 
     @Test
-    fun `Rethrow initialization error`() {
-        val delegate = DropDelegate(DummyDrop, {}) {
-            throw IllegalStateException(ERROR_MESSAGE)
-            VALUE
-        }
-        assertFailsWith<DropInitializationException>(ERROR_MESSAGE) {
-            blackHole(delegate.value)
-        }
-        assertNull(delegate.nullableValue)
-    }
-
-    @Test
     fun `Rethrow drop error`() {
-        val delegate = DropDelegate(DummyDrop, {
+        val delegate = freeing<UIntVar, FreeingTest>({
             throw IllegalStateException(ERROR_MESSAGE)
-        }) { VALUE }
+        }) { value = VALUE }
         blackHole(delegate.value)
         assertFailsWith<DropException>(ERROR_MESSAGE) {
             delegate.drop()
@@ -93,7 +87,7 @@ class DropDelegateTest {
     @Test
     fun `Don't invoke drop handler without value`() {
         var isDropped = false
-        val delegate = DropDelegate(DummyDrop, { isDropped = true }) { VALUE }
+        val delegate = freeing<UIntVar, FreeingTest>({ isDropped = true }) { value = VALUE }
         assertFalse(isDropped)
         assertNull(delegate.nullableValue)
         delegate.drop()
@@ -104,7 +98,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop handler lazily`() {
         var isDropped = false
-        val delegate = DropDelegate(DummyDrop, { isDropped = true }) { VALUE }
+        val delegate = freeing<UIntVar, FreeingTest>({ isDropped = true }) { VALUE }
         assertFalse(isDropped)
         assertNull(delegate.nullableValue)
         blackHole(delegate.value)
@@ -117,9 +111,9 @@ class DropDelegateTest {
     @Test
     fun `Invoke error callback for any exception type`() {
         var isHandled = false
-        val delegate = DropDelegate(DummyDrop, {}) {
+        val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalStateException(ERROR_MESSAGE)
-            VALUE
+            value = VALUE
         }.onAnyError { isHandled = true }
         assertFalse(isHandled)
         assertNull(delegate.nullableValue)
@@ -133,9 +127,9 @@ class DropDelegateTest {
     @Test
     fun `Invoke error callback for matching exception type`() {
         var isHandled = false
-        val delegate = DropDelegate(DummyDrop, {}) {
+        val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalStateException(ERROR_MESSAGE)
-            VALUE
+            value = VALUE
         }.onError<IllegalStateException> { isHandled = true }
         assertFalse(isHandled)
         assertNull(delegate.nullableValue)
@@ -149,9 +143,9 @@ class DropDelegateTest {
     @Test
     fun `Don't Invoke error callback for non matching exception type`() {
         var isHandled = false
-        val delegate = DropDelegate(DummyDrop, {}) {
+        val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
-            VALUE
+            value = VALUE
         }.onError<IllegalStateException> { isHandled = true }
         assertFalse(isHandled)
         assertNull(delegate.nullableValue)
@@ -165,7 +159,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop chain for any exception type`() {
         var isDropped = false
-        val delegate = DropDelegate(DummyDrop, {}) {
+        val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
             VALUE
         }
@@ -184,7 +178,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop chain for matching exception type`() {
         var isDropped = false
-        val delegate = DropDelegate(DummyDrop, {}) {
+        val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
             VALUE
         }
@@ -203,7 +197,7 @@ class DropDelegateTest {
     @Test
     fun `Invoke drop chain for non matching exception type`() {
         var isDropped = false
-        val delegate = DropDelegate(DummyDrop, {}) {
+        val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalStateException(ERROR_MESSAGE)
             VALUE
         }

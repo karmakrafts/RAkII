@@ -42,6 +42,15 @@ inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @f
         dropHandler(value)
         nativeHeap.free(value)
     }) {
-        nativeHeap.alloc<TYPE>(initializer)
+        val address = nativeHeap.alloc<TYPE>()
+        try {
+            // Invoke in-line to propagate exceptions
+            initializer(address)
+        } catch (error: Throwable) {
+            nativeHeap.free(address)
+            // Ensures we never return a dangling pointer
+            throw error
+        }
+        address
     }
 }

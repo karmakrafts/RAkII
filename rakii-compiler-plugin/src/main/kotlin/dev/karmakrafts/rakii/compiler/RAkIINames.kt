@@ -25,6 +25,7 @@ internal object RAkIINames {
     val packageName: FqName = FqName("dev.karmakrafts.rakii")
 
     object Functions {
+        val defer: Name = Name.identifier("defer")
         val drop: Name = Name.identifier("drop")
         val dropping: Name = Name.identifier("dropping")
         val freeing: Name = Name.identifier("freeing")
@@ -44,16 +45,8 @@ internal object RAkIINames {
     object DroppingScope {
         val name: Name = Name.identifier("DroppingScope")
         val id: ClassId = ClassId(packageName, name)
-    }
-
-    object RTDroppingScope {
-        val name: Name = Name.identifier("RTDroppingScope")
-        val id: ClassId = ClassId(packageName, name)
-    }
-
-    object NoopDroppingScope {
-        val name: Name = Name.identifier("NoopDroppingScope")
-        val id: ClassId = ClassId(packageName, name)
+        val defer: CallableId = CallableId(packageName, Functions.defer)
+        val dropping: CallableId = CallableId(packageName, Functions.dropping)
     }
 
     object SkipDropTransforms {

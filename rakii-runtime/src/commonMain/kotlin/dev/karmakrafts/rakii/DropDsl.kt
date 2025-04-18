@@ -18,7 +18,16 @@ package dev.karmakrafts.rakii
 
 /**
  * Marker annotation for drop API DSL container implementations
- * such as [DroppingScope].
+ * in the RAkII resource management system, such as [DroppingScope].
+ * 
+ * This annotation serves as a DSL marker in Kotlin's type system to improve
+ * the safety and readability of RAkII's resource management DSL. It helps
+ * the compiler enforce proper scoping of DSL functions and prevents accidental
+ * misuse of nested scopes.
+ * 
+ * Classes marked with this annotation form the entry points for RAkII's
+ * fluent resource management API, providing a structured and type-safe way
+ * to define resource lifecycles and cleanup behaviors.
  */
 @DslMarker
 @Retention(AnnotationRetention.BINARY)

@@ -22,14 +22,40 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.util.hasAnnotation
 
+/**
+ * Extension function that checks if an IR type is a DropDelegate.
+ *
+ * This function determines whether the type represents a DropDelegate by comparing
+ * its fully qualified name with the DropDelegate class's fully qualified name.
+ *
+ * @return `true` if the type is a DropDelegate, `false` otherwise
+ */
 internal fun IrType.isDropDelegate(): Boolean {
     return classFqName == RAkIINames.DropDelegate.fqName
 }
 
+/**
+ * Extension function that checks if a class should skip drop transformations.
+ *
+ * This function determines whether a class has been annotated with the
+ * `@SkipDropTransforms` annotation, which indicates that the RAkII compiler
+ * plugin should not apply any drop-related transformations to this class.
+ *
+ * @return `true` if the class should skip drop transformations, `false` otherwise
+ */
 internal fun IrClass.shouldSkipDropTransforms(): Boolean {
     return hasAnnotation(RAkIINames.SkipDropTransforms.id)
 }
 
+/**
+ * Extension function that checks if a function should skip drop transformations.
+ *
+ * This function determines whether a function has been annotated with the
+ * `@SkipDropTransforms` annotation, which indicates that the RAkII compiler
+ * plugin should not apply any drop-related transformations to this function.
+ *
+ * @return `true` if the function should skip drop transformations, `false` otherwise
+ */
 internal fun IrSimpleFunction.shouldSkipDropTransforms(): Boolean {
     return hasAnnotation(RAkIINames.SkipDropTransforms.id)
 }

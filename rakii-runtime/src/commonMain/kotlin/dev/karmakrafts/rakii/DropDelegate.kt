@@ -9,8 +9,15 @@ import kotlin.reflect.KProperty0
 import kotlin.reflect.KProperty1
 
 /**
- * A delegate value holder for droppable values
- * which provides a runtime implementation for drop-chains and error handlers.
+ * A delegate value holder for droppable values in the RAkII resource management system.
+ * 
+ * This class provides a runtime implementation for drop-chains and error handlers,
+ * enabling deterministic resource management with support for error handling and
+ * resource cleanup dependencies.
+ *
+ * DropDelegate is a key component of RAkII that manages the lifecycle of resources,
+ * ensuring they are properly initialized when needed (lazy initialization) and
+ * properly cleaned up when no longer needed or when errors occur.
  *
  * @param TYPE The value type of the drop delegate.
  * @param OWNER The type of the class containing the delegate field.

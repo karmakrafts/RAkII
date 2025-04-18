@@ -18,9 +18,22 @@ package dev.karmakrafts.rakii
 
 /**
  * Marker annotation for functionality that may be transformed
- * by the RAkII compiler.
- * This is mainly as a visual indicator for those who want to
- * work on the compiler plugin themselves.
+ * by the RAkII compiler plugin.
+ * 
+ * In the RAkII resource management system, this annotation identifies
+ * functions, properties, and classes that are subject to compile-time
+ * transformations by the RAkII compiler plugin. These transformations
+ * enable the deterministic resource management capabilities of RAkII.
+ * 
+ * Functions and properties marked with this annotation may behave
+ * differently at runtime than their source code suggests, as the
+ * compiler plugin may insert additional code for resource tracking,
+ * initialization, and cleanup.
+ * 
+ * This annotation serves as a visual indicator for:
+ * 1. Library users - to understand which APIs are part of RAkII's core functionality
+ * 2. Library developers - to identify code that has special handling in the compiler
+ * 3. Compiler plugin developers - to locate code that requires transformation
  */
 @Retention(AnnotationRetention.BINARY)
 annotation class IntrinsicDropApi

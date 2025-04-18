@@ -23,8 +23,31 @@ import kotlinx.cinterop.free
 import kotlinx.cinterop.nativeHeap
 
 /**
- * Creates a new [DropDelegate] instance owned by the calling class [OWNER].
+ * Creates a new [DropDelegate] instance for C interop variables owned by the calling class [OWNER].
  * This leaves the delegate uninitialized until the first time it is referenced.
+ *
+ * This function is a specialized part of the RAkII resource management system for Kotlin/Native,
+ * designed specifically for managing native memory allocated for C structures and variables.
+ * It ensures proper allocation and deallocation of native memory, preventing memory leaks
+ * in Kotlin/Native applications that interact with C code.
+ *
+ * The function handles the common pattern of allocating memory on the native heap,
+ * initializing it, and ensuring it's properly freed when no longer needed. It also
+ * provides proper error handling to prevent memory leaks when initialization fails.
+ *
+ * Example:
+ * ```
+ * class NativeResourceManager : Drop {
+ *     private val nativeStruct by freeing<MyNativeStruct, NativeResourceManager> {
+ *         // Initialize the native structure
+ *         field1 = 42
+ *         field2 = someValue
+ *     }
+ *     
+ *     // Use nativeStruct...
+ * }
+ * // When NativeResourceManager is dropped, nativeStruct will be freed automatically
+ * ```
  *
  * @param TYPE The C value type of the delegate.
  * @param OWNER The type of the class which contains the delegate field.

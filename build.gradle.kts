@@ -16,10 +16,10 @@
 
 import dev.karmakrafts.conventions.GitLabCI
 import dev.karmakrafts.conventions.configureJava
-import dev.karmakrafts.conventions.setProjectInfo
 import dev.karmakrafts.conventions.defaultDependencyLocking
+import dev.karmakrafts.conventions.setProjectInfo
+import dev.karmakrafts.conventions.signPublications
 import java.net.URI
-import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 plugins {
@@ -41,31 +41,22 @@ allprojects {
     configureJava(rootProject.libs.versions.java)
 }
 
+@OptIn(ExperimentalEncodingApi::class)
 subprojects {
     apply<MavenPublishPlugin>()
     apply<SigningPlugin>()
 
     group = rootProject.group
     version = rootProject.version
-    if(GitLabCI.isCI) defaultDependencyLocking()
+    if (GitLabCI.isCI) defaultDependencyLocking()
 
     publishing {
         setProjectInfo(rootProject.name, "Structured RAII with error handling for Kotlin Multiplatform")
         with(GitLabCI) { karmaKraftsDefaults() }
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
     signing {
-        System.getenv("SIGNING_KEY_ID")?.let { keyId ->
-            useInMemoryPgpKeys( // @formatter:off
-                keyId,
-                System.getenv("SIGNING_PRIVATE_KEY")?.let { encodedKey ->
-                    Base64.decode(encodedKey).decodeToString()
-                },
-                System.getenv("SIGNING_PASSWORD")
-            ) // @formatter:on
-        }
-        sign(publishing.publications)
+        signPublications()
     }
 }
 

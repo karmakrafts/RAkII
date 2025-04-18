@@ -24,11 +24,18 @@ import kotlin.contracts.contract
 /**
  * A dropping scope instance which provides a runtime implementation
  * for handling end-of-scope dropping using the existing [DropDelegate] API.
+ *
+ * DroppingScope is a key component of the RAkII resource management system that enables
+ * local resource management within function scopes. It allows resources to be automatically
+ * cleaned up when execution leaves the scope, regardless of how it exits (normal return or exception).
+ *
+ * This class provides a structured way to manage resources with deterministic cleanup
+ * in local scopes, complementing the class-level resource management provided by the [Drop] interface.
  */
 @DropDsl
 open class DroppingScope @PublishedApi internal constructor() {
     @SkipDropTransforms
-    companion object Owner : Drop {
+    object Owner : Drop {
         @GeneratedDropApi
         override fun drop() = Unit
     }
@@ -94,9 +101,25 @@ open class DroppingScope @PublishedApi internal constructor() {
  * Creates a new deferring scope which allows locally auto-dropping
  * values and using guards.
  *
- * @param scope The deferring scope.
- * @return The value returned within the deferring scope if no exception
- *  was raised.
+ * This function is a key part of the RAkII resource management system that enables
+ * structured resource management within local scopes. It creates a [DroppingScope]
+ * and ensures that all resources created within the scope are properly cleaned up
+ * when execution leaves the scope, regardless of how it exits (normal return or exception).
+ *
+ * Use this function when you need to manage resources with deterministic cleanup
+ * in a local scope, similar to using try-with-resources in Java or using statements in C#.
+ *
+ * Example:
+ * ```
+ * deferring {
+ *     val resource = dropping { createResource() }
+ *     // Use resource...
+ *     // resource will be automatically closed when leaving this scope
+ * }
+ * ```
+ *
+ * @param scope The deferring scope function containing resource management code.
+ * @return The value returned within the deferring scope if no exception was raised.
  */
 @OptIn(ExperimentalContracts::class)
 inline fun <reified R> deferring(scope: DroppingScope.() -> R): R {

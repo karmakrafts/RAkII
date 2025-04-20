@@ -20,6 +20,18 @@ import co.touchlab.stately.collections.SharedLinkedList
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.native.concurrent.ThreadLocal
+
+/**
+ * The global singleton instance of [DroppingScope] used by the [deferring] function.
+ * 
+ * This instance is thread-local to ensure thread safety when multiple threads
+ * are using deferring blocks concurrently. Each thread gets its own instance
+ * that is reset before each use in a deferring block.
+ */
+@PublishedApi
+@ThreadLocal
+internal val droppingScope: DroppingScope = DroppingScope()
 
 /**
  * A dropping scope instance which provides a runtime implementation
@@ -34,8 +46,55 @@ import kotlin.contracts.contract
  */
 @DropDsl
 open class DroppingScope @PublishedApi internal constructor() {
+    /**
+     * Companion object providing access to the global [DroppingScope] instance.
+     */
+    companion object {
+        /**
+         * Gets the thread-local [DroppingScope] instance and resets it.
+         * 
+         * This method is used by the [deferring] function to obtain a clean
+         * scope instance for each deferring block, ensuring that resources
+         * from previous blocks don't leak into new ones.
+         * 
+         * @return The reset thread-local [DroppingScope] instance.
+         */
+        @PublishedApi
+        @Suppress("NOTHING_TO_INLINE")
+        internal inline fun get(): DroppingScope = droppingScope.reset()
+    }
+
+    /**
+     * A specialized [Drop] implementation that serves as the owner for [DropDelegate] instances
+     * created within a [deferring] block.
+     * 
+     * This class is used internally by the RAkII resource management system to provide
+     * a consistent owner for delegates created in function scopes, allowing them to be
+     * properly managed by the same mechanisms used for class-level resource management.
+     * 
+     * The [SkipDropTransforms] annotation ensures that the RAkII compiler plugin doesn't
+     * apply transformations to this class, as it's handled specially by the runtime.
+     */
     @SkipDropTransforms
-    object Owner : Drop {
+    class Owner private constructor() : Drop {
+        /**
+         * Companion object providing access to the singleton [Owner] instance.
+         */
+        companion object {
+            /**
+             * The singleton instance of [Owner] used for all [DropDelegate] instances
+             * created within [deferring] blocks.
+             */
+            @PublishedApi
+            internal val instance: Owner = Owner()
+        }
+
+        /**
+         * Implementation of the [Drop.drop] method that does nothing.
+         * 
+         * The actual dropping of resources is handled by the [DroppingScope] class
+         * through the [dropAll] method, not through this method.
+         */
         @GeneratedDropApi
         override fun drop() = Unit
     }
@@ -43,6 +102,27 @@ open class DroppingScope @PublishedApi internal constructor() {
     @PublishedApi
     internal val delegates: SharedLinkedList<() -> Unit> = SharedLinkedList()
 
+    /**
+     * Resets this scope by clearing all registered drop handlers.
+     * 
+     * This method is called by [get] to ensure a clean scope for each new
+     * [deferring] block, preventing resource leaks between different blocks.
+     * 
+     * @return This [DroppingScope] instance after resetting.
+     */
+    @PublishedApi
+    internal fun reset(): DroppingScope {
+        delegates.clear()
+        return this
+    }
+
+    /**
+     * Executes all registered drop handlers in this scope.
+     * 
+     * This method is called in the finally block of the [deferring] function
+     * to ensure all resources are properly cleaned up when the scope ends,
+     * regardless of how it exits (normal return or exception).
+     */
     @PublishedApi
     @Suppress("NOTHING_TO_INLINE")
     internal inline fun dropAll() = delegates.forEach { it() }
@@ -53,9 +133,8 @@ open class DroppingScope @PublishedApi internal constructor() {
      *
      * @param scope The scope to be run before every return-point in the scope.
      */
-    @IntrinsicDropApi
-    fun defer(scope: () -> Unit) {
-        delegates += scope
+    inline fun defer(crossinline scope: DropDslScope.() -> Unit) {
+        delegates += { DropDslScope.instance.scope() }
     }
 
     /**
@@ -67,12 +146,13 @@ open class DroppingScope @PublishedApi internal constructor() {
      * @param initializer A factory which is invoked for lazily creating the delegate value when it's used.
      * @return A new [DropDelegate] instance associated with the current scope.
      */
-    @IntrinsicDropApi
     inline fun <reified T : Any> dropping( // @formatter:off
-        noinline dropHandler: (T) -> Unit,
-        noinline initializer: () -> T
+        crossinline dropHandler: DropDslScope.(T) -> Unit,
+        crossinline initializer: DropDslScope.() -> T
     ): DropDelegate<T, Owner> { // @formatter:on
-        val delegate = DropDelegate(Owner, dropHandler, initializer)
+        val delegate = DropDelegate(Owner.instance, { DropDslScope.instance.dropHandler(it) }) {
+            DropDslScope.instance.initializer()
+        }
         delegates += delegate::drop
         return delegate
     }
@@ -87,11 +167,12 @@ open class DroppingScope @PublishedApi internal constructor() {
      * @param initializer A factory which is invoked for lazily creating the delegate value when it's used.
      * @return A new [DropDelegate] instance associated with the current scope.
      */
-    @IntrinsicDropApi
     inline fun <reified T : AutoCloseable> dropping( // @formatter:off
-        noinline initializer: () -> T
+        crossinline initializer: DropDslScope.() -> T
     ): DropDelegate<T, Owner> { // @formatter:on
-        val delegate = DropDelegate(Owner, AutoCloseable::close, initializer)
+        val delegate = DropDelegate(Owner.instance, AutoCloseable::close) {
+            DropDslScope.instance.initializer()
+        }
         delegates += delegate::drop
         return delegate
     }
@@ -126,7 +207,7 @@ inline fun <reified R> deferring(scope: DroppingScope.() -> R): R {
     contract {
         callsInPlace(scope, InvocationKind.EXACTLY_ONCE)
     }
-    val scopeInstance = DroppingScope()
+    val scopeInstance = DroppingScope.get()
     return try {
         scopeInstance.scope()
     }

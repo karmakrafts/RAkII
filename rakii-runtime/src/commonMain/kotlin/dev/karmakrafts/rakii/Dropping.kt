@@ -16,11 +16,13 @@ package dev.karmakrafts.rakii
  * @param initializer A factory which is invoked for lazily creating the delegate value when it's used.
  * @return A new [DropDelegate] instance associated with this class.
  */
-@IntrinsicDropApi
 inline fun <reified TYPE : Any, reified OWNER : Drop> OWNER.dropping(
-    noinline dropHandler: (TYPE) -> Unit, noinline initializer: () -> TYPE
+    crossinline dropHandler: DropDslScope.(TYPE) -> Unit,
+    crossinline initializer: DropDslScope.() -> TYPE
 ): DropDelegate<TYPE, OWNER> {
-    return DropDelegate(this, dropHandler, initializer)
+    return DropDelegate(this, { DropDslScope.instance.dropHandler(it) }) {
+        DropDslScope.instance.initializer()
+    }
 }
 
 /**
@@ -41,7 +43,8 @@ inline fun <reified TYPE : Any, reified OWNER : Drop> OWNER.dropping(
  * @param initializer A factory which is invoked for lazily creating the delegate value when it's used.
  * @return A new [DropDelegate] instance associated with this class.
  */
-@IntrinsicDropApi
 inline fun <reified TYPE : AutoCloseable, reified OWNER : Drop> OWNER.dropping(
-    noinline initializer: () -> TYPE
-): DropDelegate<TYPE, OWNER> = dropping(AutoCloseable::close, initializer)
+    crossinline initializer: DropDslScope.() -> TYPE
+): DropDelegate<TYPE, OWNER> = dropping({ AutoCloseable::close }) {
+    DropDslScope.instance.initializer()
+}

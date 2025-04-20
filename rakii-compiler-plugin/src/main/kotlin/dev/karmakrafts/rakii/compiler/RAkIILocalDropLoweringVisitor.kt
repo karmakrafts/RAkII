@@ -62,6 +62,6 @@ internal class RAkIILocalDropLoweringVisitor(
         // If the function is marked with @SkipDropTransforms, skip it..
         if (declaration.shouldSkipDropTransforms()) return
         val body = declaration.body as? IrBlockBody ?: return
-
+        for(statement in body.statements) {}
     }
 }

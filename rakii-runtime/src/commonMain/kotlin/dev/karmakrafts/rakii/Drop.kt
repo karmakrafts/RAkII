@@ -40,7 +40,6 @@ interface Drop : AutoCloseable {
      * **This should not be overridden unless the implementing
      * class is marked with the [SkipDropTransforms] annotation!**
      */
-    @IntrinsicDropApi
     @GeneratedDropApi
     fun drop() {
         throw UnsupportedOperationException("RAkII drop function wasn't lowered during IR transformation")

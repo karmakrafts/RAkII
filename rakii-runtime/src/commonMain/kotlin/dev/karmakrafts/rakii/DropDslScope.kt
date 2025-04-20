@@ -14,28 +14,12 @@
  * limitations under the License.
  */
 
-rootProject.name = "rakii"
+package dev.karmakrafts.rakii
 
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        mavenLocal()
-        gradlePluginPortal()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
+@DropDsl
+class DropDslScope private constructor() {
+    companion object {
+        @PublishedApi
+        internal val instance: DropDslScope = DropDslScope()
     }
 }
-
-@Suppress("UnstableApiUsage")
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        mavenLocal()
-        maven("https://central.sonatype.com/repository/maven-snapshots")
-    }
-}
-
-include("rakii-runtime")
-include("rakii-gradle-plugin")
-include("rakii-compiler-plugin")

@@ -42,7 +42,7 @@ class FreeingTest : Drop {
 
     @Test
     fun `Lazily initialize`() {
-        val delegate = freeing<UIntVar, FreeingTest> { value = VALUE }
+        val delegate = freeing<UIntVar, FreeingTest> { it.value = VALUE }
         assertNull(delegate.nullableValue)
         assertNotEquals(NativePtr.NULL, delegate.value.rawPtr)
         assertEquals(VALUE, delegate.value.value)
@@ -52,7 +52,7 @@ class FreeingTest : Drop {
 
     @Test
     fun `Update internal drop state`() {
-        val delegate = freeing<UIntVar, FreeingTest> { value = VALUE }
+        val delegate = freeing<UIntVar, FreeingTest> { it.value = VALUE }
         assertFalse(delegate.isDropped)
         assertNull(delegate.nullableValue)
         delegate.drop()
@@ -63,7 +63,7 @@ class FreeingTest : Drop {
     @Test
     fun `Don't invoke drop handler twice on double drop`() {
         var dropCount = 0
-        val delegate = freeing<UIntVar, FreeingTest>({ ++dropCount }) { value = VALUE }
+        val delegate = freeing<UIntVar, FreeingTest>({ ++dropCount }) { it.value = VALUE }
         blackHole(delegate.value)
         delegate.drop()
         assertNull(delegate.nullableValue)
@@ -76,7 +76,7 @@ class FreeingTest : Drop {
     fun `Rethrow drop error`() {
         val delegate = freeing<UIntVar, FreeingTest>({
             throw IllegalStateException(ERROR_MESSAGE)
-        }) { value = VALUE }
+        }) { it.value = VALUE }
         blackHole(delegate.value)
         assertFailsWith<DropException>(ERROR_MESSAGE) {
             delegate.drop()
@@ -87,7 +87,7 @@ class FreeingTest : Drop {
     @Test
     fun `Don't invoke drop handler without value`() {
         var isDropped = false
-        val delegate = freeing<UIntVar, FreeingTest>({ isDropped = true }) { value = VALUE }
+        val delegate = freeing<UIntVar, FreeingTest>({ isDropped = true }) { it.value = VALUE }
         assertFalse(isDropped)
         assertNull(delegate.nullableValue)
         delegate.drop()
@@ -113,7 +113,7 @@ class FreeingTest : Drop {
         var isHandled = false
         val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalStateException(ERROR_MESSAGE)
-            value = VALUE
+            it.value = VALUE
         }.onAnyError { isHandled = true }
         assertFalse(isHandled)
         assertNull(delegate.nullableValue)
@@ -129,7 +129,7 @@ class FreeingTest : Drop {
         var isHandled = false
         val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalStateException(ERROR_MESSAGE)
-            value = VALUE
+            it.value = VALUE
         }.onError<IllegalStateException> { isHandled = true }
         assertFalse(isHandled)
         assertNull(delegate.nullableValue)
@@ -145,7 +145,7 @@ class FreeingTest : Drop {
         var isHandled = false
         val delegate = freeing<UIntVar, FreeingTest>({}) {
             throw IllegalArgumentException(ERROR_MESSAGE)
-            value = VALUE
+            it.value = VALUE
         }.onError<IllegalStateException> { isHandled = true }
         assertFalse(isHandled)
         assertNull(delegate.nullableValue)

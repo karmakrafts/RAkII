@@ -113,7 +113,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * **This is used by the RAkII compiler plugin to build the main drop chain
      * by inserting calls into the [Drop.drop] function.**
      */
-    @IntrinsicDropApi
     fun drop() {
         if (!_isDropped.compareAndSet(expectedValue = false, newValue = true)) {
             return // Return early and ignore any additional drops
@@ -137,7 +136,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @return A new drop delegate with the same owner instance,
      *  drop handler and initializer as this delegate.
      */
-    @IntrinsicDropApi
     fun copyWithoutValue(): DropDelegate<TYPE, OWNER> = DropDelegate(instance, dropHandler, initializer).apply {
         dropChain += this@DropDelegate.dropChain
         errorHandlers += this@DropDelegate.errorHandlers
@@ -153,7 +151,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @return A new drop delegate with the same owner instance,
      *  drop handler, initializer and value (if present) as this delegate.
      */
-    @IntrinsicDropApi
     fun copyWithValue(): DropDelegate<TYPE, OWNER> = copyWithoutValue().apply {
         this@DropDelegate._value.load()?.let(_value::store)
     }
@@ -167,7 +164,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @param X The type of exception which causes the given property to be dropped.
      * @return This property.
      */
-    @IntrinsicDropApi
     inline fun <reified X : Throwable> dropOnError(
         property: KProperty1<OWNER, AutoCloseable?>
     ): DropDelegate<TYPE, OWNER> {
@@ -188,7 +184,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @param X The type of exception which causes the given property to be dropped.
      * @return This property.
      */
-    @IntrinsicDropApi
     inline fun <reified X : Throwable> dropOnError(
         property: KProperty0<AutoCloseable?>
     ): DropDelegate<TYPE, OWNER> {
@@ -204,7 +199,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @param property The property to drop when the initialization of this property fails.
      * @return This property.
      */
-    @IntrinsicDropApi
     fun dropOnAnyError(
         property: KProperty1<OWNER, AutoCloseable?>
     ): DropDelegate<TYPE, OWNER> = dropOnError<Throwable>(property)
@@ -217,7 +211,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @param property The property to drop when the initialization of this property fails.
      * @return This property.
      */
-    @IntrinsicDropApi
     fun dropOnAnyError(
         property: KProperty0<AutoCloseable?>
     ): DropDelegate<TYPE, OWNER> = dropOnError<Throwable>(property)
@@ -231,7 +224,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @param X The type of exception which triggers the callback invocation.
      * @return This property.
      */
-    @IntrinsicDropApi
     @Suppress("UNCHECKED_CAST")
     inline fun <reified X : Throwable> onError(
         noinline callback: (X) -> Unit
@@ -248,7 +240,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      *  during property initialization.
      * @return This property.
      */
-    @IntrinsicDropApi
     fun onAnyError(
         callback: (Throwable) -> Unit
     ): DropDelegate<TYPE, OWNER> = onError<Throwable>(callback)
@@ -260,7 +251,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @return A new [ValueDelegate] to provide the nullable result
      *  of the terminated property chain.
      */
-    @IntrinsicDropApi
     @Suppress("UNUSED_PARAMETER")
     fun nullOnError(): ValueDelegate<TYPE?> = ValueDelegate { thisRef, property ->
         return@ValueDelegate try {
@@ -280,7 +270,6 @@ class DropDelegate<TYPE : Any, OWNER : Drop> @PublishedApi internal constructor(
      * @return A new [ValueDelegate] to provide the non-null result
      *  of the terminated property chain.
      */
-    @IntrinsicDropApi
     @Suppress("UNUSED_PARAMETER")
     inline fun defaultOnError(
         crossinline initializer: () -> TYPE

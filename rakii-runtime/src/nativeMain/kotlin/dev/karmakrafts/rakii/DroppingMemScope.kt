@@ -72,7 +72,6 @@ class DroppingMemScope @PublishedApi internal constructor(
  * @return The value returned from within the given scope.
  */
 @ExperimentalForeignApi
-@IntrinsicDropApi
 @OptIn(ExperimentalContracts::class)
 inline fun <reified R> deferringMemScoped(scope: DroppingMemScope.() -> R): R {
     contract {

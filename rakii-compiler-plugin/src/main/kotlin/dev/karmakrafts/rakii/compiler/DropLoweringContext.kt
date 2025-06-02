@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-package dev.karmakrafts.rakii
+package dev.karmakrafts.rakii.compiler
 
-@DropDsl
-class DropDslScope private constructor() {
-    companion object {
-        @PublishedApi
-        internal val instance: DropDslScope = DropDslScope()
-    }
-}
+internal class DropLoweringContext

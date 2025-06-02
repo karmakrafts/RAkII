@@ -1,7 +1,7 @@
 # RAkII
 
 [![](https://git.karmakrafts.dev/kk/rakii/badges/master/pipeline.svg)](https://git.karmakrafts.dev/kk/rakii/-/pipelines)
-[![](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Fpublish%2Fstaging%2Fmaven2%2Fdev%2Fkarmakrafts%2Frakii%2Frakii-runtime%2Fmaven-metadata.xml
+[![](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.maven.apache.org%2Fmaven2%2Fdev%2Fkarmakrafts%2Frakii%2Frakii-runtime%2Fmaven-metadata.xml
 )](https://git.karmakrafts.dev/kk/rakii/-/packages)
 [![](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fdev%2Fkarmakrafts%2Frakii%2Frakii-runtime%2Fmaven-metadata.xml
 )](https://git.karmakrafts.dev/kk/rakii/-/packages)
@@ -15,7 +15,7 @@ However, since Cleaners are not suitable for managing micro-allocations in
 a granular manner in Kotlin, this library can be employed to reduce potential for
 common errors, resource leaks and double-frees.
 
-### How to configure it
+### How to use it
 
 Simply add the required repositories to your build configuration, apply the
 Gradle plugin and add a dependency on the runtime:
@@ -25,20 +25,14 @@ In your `settings.gradle.kts`:
 ```kotlin
 pluginManagement {
     repositories {
-        // Snapshots are available from the Karma Krafts repository or Maven Central Snapshots
-        maven("https://files.karmakrafts.dev/maven")
         maven("https://central.sonatype.com/repository/maven-snapshots")
-        // Releases are mirrored to the central M2 repository
         mavenCentral()
     }
 }
 
 dependencyResolutionManagement {
     repositories {
-        // Snapshots are available from the Karma Krafts repository or Maven Central Snapshots
-        maven("https://files.karmakrafts.dev/maven")
         maven("https://central.sonatype.com/repository/maven-snapshots")
-        // Releases are mirrored to the central M2 repository
         mavenCentral()
     }
 }
@@ -64,7 +58,7 @@ kotlin {
 
 **Note: It is recommended to use Gradle version catalogs which were omitted here for simplification.**
 
-### How to use it
+### Usage example
 
 ```kotlin
 import dev.karmakrafts.rakii.Drop

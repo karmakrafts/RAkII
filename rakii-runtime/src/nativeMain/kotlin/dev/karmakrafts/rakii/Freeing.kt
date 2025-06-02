@@ -25,7 +25,7 @@ import kotlinx.cinterop.nativeHeap
 /**
  * Creates a new [DropDelegate] instance for a native memory allocation of type [TYPE],
  * owned by the calling class [OWNER].
- * 
+ *
  * This function is a specialized version of [dropping] for Kotlin/Native that handles
  * native memory allocations (CVariables). It ensures proper memory management by:
  * 1. Allocating memory on the native heap when the value is first accessed
@@ -34,7 +34,7 @@ import kotlinx.cinterop.nativeHeap
  * 4. Properly handling exceptions during initialization to prevent memory leaks
  *
  * The memory is allocated lazily when the delegate is first accessed, not when it's created.
- * 
+ *
  * Example usage:
  * ```kotlin
  * class NativeResourceManager : Drop {
@@ -52,17 +52,17 @@ import kotlinx.cinterop.nativeHeap
  */
 @ExperimentalForeignApi
 inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @formatter:off
-    crossinline dropHandler: DropDslScope.(TYPE) -> Unit = {},
-    crossinline initializer: DropDslScope.(TYPE) -> Unit
+    crossinline dropHandler: (TYPE) -> Unit = {},
+    crossinline initializer: (TYPE) -> Unit
 ): DropDelegate<TYPE, OWNER> { // @formatter:on
     return dropping({ value ->
-        DropDslScope.instance.dropHandler(value)
+        dropHandler(value)
         nativeHeap.free(value)
     }) {
         val address = nativeHeap.alloc<TYPE>()
         try {
             // Invoke in-line to propagate exceptions
-            DropDslScope.instance.initializer(address)
+            initializer(address)
         } catch (error: Throwable) {
             nativeHeap.free(address)
             // Ensures we never return a dangling pointer
@@ -75,7 +75,7 @@ inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @f
 /**
  * Creates a new [DropDelegate] instance for a native memory allocation of type [TYPE],
  * owned by the current [DroppingScope].
- * 
+ *
  * This function is a specialized version of [DroppingScope.dropping] for Kotlin/Native
  * that handles native memory allocations (CVariables) within a scope. It ensures proper
  * memory management by:
@@ -85,7 +85,7 @@ inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @f
  * 4. Properly handling exceptions during initialization to prevent memory leaks
  *
  * The memory is allocated lazily when the delegate is first accessed, not when it's created.
- * 
+ *
  * Example usage:
  * ```kotlin
  * deferring {
@@ -104,17 +104,17 @@ inline fun <reified TYPE : CVariable, reified OWNER : Drop> OWNER.freeing( // @f
  */
 @ExperimentalForeignApi
 inline fun <reified TYPE : CVariable> DroppingScope.freeing( // @formatter:off
-    crossinline dropHandler: DropDslScope.(TYPE) -> Unit = {},
-    crossinline initializer: DropDslScope.(TYPE) -> Unit
+    crossinline dropHandler: (TYPE) -> Unit = {},
+    crossinline initializer: (TYPE) -> Unit
 ): DropDelegate<TYPE, DroppingScope.Owner> { // @formatter:on
     return dropping({ value ->
-        DropDslScope.instance.dropHandler(value)
+        dropHandler(value)
         nativeHeap.free(value)
     }) {
         val address = nativeHeap.alloc<TYPE>()
         try {
             // Invoke in-line to propagate exceptions
-            DropDslScope.instance.initializer(address)
+            initializer(address)
         } catch (error: Throwable) {
             nativeHeap.free(address)
             // Ensures we never return a dangling pointer

@@ -14,16 +14,34 @@
  * limitations under the License.
  */
 
+import dev.karmakrafts.conventions.configureJava
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.kapt)
     `maven-publish`
 }
 
+configureJava(rootProject.libs.versions.java)
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 dependencies {
     compileOnly(libs.kotlin.compiler.embeddable)
     compileOnly(libs.autoService)
     kapt(libs.autoService)
+
+    testImplementation(libs.iridium)
+}
+
+tasks {
+    test {
+        useJUnit()
+        maxParallelForks = Runtime.getRuntime().availableProcessors()
+    }
 }
 
 publishing {

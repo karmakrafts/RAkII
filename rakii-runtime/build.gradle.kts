@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import dev.karmakrafts.conventions.configureJava
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import java.time.ZonedDateTime
 
 plugins {
@@ -24,7 +26,10 @@ plugins {
     `maven-publish`
 }
 
+configureJava(rootProject.libs.versions.java)
+
 kotlin {
+    withSourcesJar(true)
     mingwX64()
     linuxX64()
     linuxArm64()
@@ -51,13 +56,17 @@ kotlin {
         browser()
         nodejs()
     }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        nodejs()
+    }
     applyDefaultHierarchyTemplate()
-    withSourcesJar(true)
     sourceSets {
         commonMain {
             dependencies {
                 implementation(libs.stately.common)
-                implementation(libs.stately.collections)
+                implementation(libs.stately.concurrent.collections)
             }
         }
         commonTest {

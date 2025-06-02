@@ -18,18 +18,5 @@ package dev.karmakrafts.rakii
 
 /**
  * A base exception type for all [DropDelegate] related functions in the RAkII resource management system.
- * 
- * This exception represents errors that occur during resource management operations,
- * particularly during the cleanup phase when resources are being dropped. It provides
- * a consistent error handling mechanism for the RAkII system, allowing applications
- * to catch and handle resource management errors in a structured way.
- * 
- * This exception can be raised in several scenarios:
- * 1. Directly when invoking the drop-chain of a [DropDelegate] instance
- * 2. When a drop handler fails to complete successfully
- * 3. Indirectly when a [DropErrorHandlerException] or [DropInitializationException] is raised
- * 
- * Applications using RAkII should handle this exception type to properly respond to
- * resource management failures and potentially implement recovery strategies.
  */
 open class DropException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)

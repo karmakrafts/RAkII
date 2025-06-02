@@ -21,27 +21,11 @@ import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationGenerationExtension
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 
-/**
- * FIR extension registrar for the RAkII compiler plugin.
- *
- * This class is responsible for registering all FIR (Frontend IR) extensions used by the RAkII compiler plugin.
- * It is called during the compiler's initialization phase to set up the necessary extensions for the FIR phase
- * of compilation.
- *
- * @property messageCollector Used to report compiler messages during the registration process
- */
 internal class RAkIIFirExtensionRegistrar(
     private val messageCollector: MessageCollector
 ) : FirExtensionRegistrar() {
-    /**
-     * Configures the FIR extensions for the RAkII compiler plugin.
-     *
-     * This method is called by the Kotlin compiler to register FIR extensions.
-     * It registers the RAkIIDropGenerationExtension which is responsible for generating
-     * drop function declarations for classes implementing the Drop interface.
-     */
     override fun ExtensionRegistrarContext.configurePlugin() {
         messageCollector.report(CompilerMessageSeverity.LOGGING, "Configuring RAkII FIR generation extension")
-        +FirDeclarationGenerationExtension.Factory { RAkIIDropGenerationExtension(it, messageCollector) }
+        +FirDeclarationGenerationExtension.Factory { DropGenerationExtension(it, messageCollector) }
     }
 }

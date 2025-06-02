@@ -40,7 +40,6 @@ import kotlin.contracts.contract
  * @param scope The [MemScope] instance delegate of this dropping memory scope.
  */
 @ExperimentalForeignApi
-@DropDsl
 class DroppingMemScope @PublishedApi internal constructor(
     private val scope: MemScope
 ) : DroppingScope(), NativePlacement by scope

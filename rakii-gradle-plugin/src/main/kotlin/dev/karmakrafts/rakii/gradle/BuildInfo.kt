@@ -18,32 +18,13 @@ package dev.karmakrafts.rakii.gradle
 
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 
-/**
- * Internal object containing build information and constants for the RAkII Gradle plugin.
- * This object provides access to plugin metadata such as group ID, plugin name, and version.
- */
 internal object BuildInfo {
-    /**
-     * The group ID for the RAkII plugin artifacts.
-     */
     const val GROUP: String = "dev.karmakrafts.rakii"
-
-    /**
-     * The name of the RAkII compiler plugin.
-     */
     const val PLUGIN_NAME: String = "rakii-compiler-plugin"
 
-    /**
-     * The version of the RAkII plugin, read from the 'rakii.version' resource file.
-     * This is used to ensure version consistency across the plugin components.
-     */
     val version: String = BuildInfo::class.java.getResourceAsStream("/rakii.version")?.bufferedReader().use {
         it?.readText()
     }!!
 
-    /**
-     * The SubpluginArtifact instance used by the Kotlin compiler plugin API.
-     * This is used to identify the compiler plugin artifact when registering with the Kotlin compiler.
-     */
     val pluginArtifact: SubpluginArtifact = SubpluginArtifact(GROUP, PLUGIN_NAME, version)
 }

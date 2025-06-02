@@ -20,16 +20,6 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 
-/**
- * Extension function that checks if a class should skip drop transformations.
- *
- * This function determines whether a class has been annotated with the
- * `@SkipDropTransforms` annotation, which indicates that the RAkII compiler
- * plugin should not apply any drop-related transformations to this class.
- *
- * @param session The FIR session context
- * @return `true` if the class should skip drop transformations, `false` otherwise
- */
 internal fun FirClassSymbol<*>.shouldSkipDropTransforms(session: FirSession): Boolean {
     return hasAnnotation(RAkIINames.SkipDropTransforms.id, session)
 }

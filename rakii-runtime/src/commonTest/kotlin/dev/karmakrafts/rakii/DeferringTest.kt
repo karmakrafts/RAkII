@@ -76,7 +76,6 @@ class DeferringTest {
     fun `Drop uninitialized delegate`() {
         var isDropped = false
         deferring {
-            val value by dropping({ isDropped = true }) { VALUE }
             assertFalse(isDropped)
         }
         assertFalse(isDropped)

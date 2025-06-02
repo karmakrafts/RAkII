@@ -21,22 +21,9 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 
-/**
- * Container for all name constants used by the RAkII compiler plugin.
- *
- * This object provides centralized access to all the names, identifiers, and IDs
- * used throughout the RAkII compiler plugin. This includes function names, class IDs,
- * and callable IDs for various RAkII components.
- */
 internal object RAkIINames {
-    /**
-     * The base package name for all RAkII components.
-     */
     val packageName: FqName = FqName("dev.karmakrafts.rakii")
 
-    /**
-     * Container for all function names used by the RAkII compiler plugin.
-     */
     object Functions {
         val defer: Name = Name.identifier("defer")
         val drop: Name = Name.identifier("drop")
@@ -55,9 +42,6 @@ internal object RAkIINames {
     val dropping: CallableId = CallableId(packageName, Functions.dropping)
     val freeing: CallableId = CallableId(packageName, Functions.freeing)
 
-    /**
-     * Container for DroppingScope-related identifiers.
-     */
     object DroppingScope {
         val name: Name = Name.identifier("DroppingScope")
         val id: ClassId = ClassId(packageName, name)
@@ -66,25 +50,16 @@ internal object RAkIINames {
         val dropping: CallableId = CallableId(packageName, Functions.dropping)
     }
 
-    /**
-     * Container for SkipDropTransforms annotation-related identifiers.
-     */
     object SkipDropTransforms {
         val name: Name = Name.identifier("SkipDropTransforms")
         val id: ClassId = ClassId(packageName, name)
     }
 
-    /**
-     * Container for Drop interface-related identifiers.
-     */
     object Drop {
         val name: Name = Name.identifier("Drop")
         val id: ClassId = ClassId(packageName, name)
     }
 
-    /**
-     * Container for DropDelegate class-related identifiers.
-     */
     object DropDelegate {
         val name: Name = Name.identifier("DropDelegate")
         val id: ClassId = ClassId(packageName, name)

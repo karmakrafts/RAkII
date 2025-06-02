@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import dev.karmakrafts.conventions.configureJava
 import kotlin.io.path.createDirectories
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.div
@@ -23,6 +24,13 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     `java-gradle-plugin`
     `maven-publish`
+}
+
+configureJava(rootProject.libs.versions.java)
+
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
 dependencies {
@@ -39,6 +47,9 @@ kotlin {
 }
 
 tasks {
+    val sourcesJar by getting {
+        dependsOn(compileJava)
+    }
     val createVersionFile by registering {
         doFirst {
             val path = (layout.buildDirectory.asFile.get().toPath() / "generated" / "rakii.version")

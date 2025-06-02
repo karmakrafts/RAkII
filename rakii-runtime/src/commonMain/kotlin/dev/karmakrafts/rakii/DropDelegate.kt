@@ -10,7 +10,7 @@ import kotlin.reflect.KProperty1
 
 /**
  * A delegate value holder for droppable values in the RAkII resource management system.
- * 
+ *
  * This class provides a runtime implementation for drop-chains and error handlers,
  * enabling deterministic resource management with support for error handling and
  * resource cleanup dependencies.

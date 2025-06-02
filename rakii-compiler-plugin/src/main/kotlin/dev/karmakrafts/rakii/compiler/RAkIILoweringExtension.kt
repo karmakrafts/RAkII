@@ -22,32 +22,16 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
 
-/**
- * IR generation extension for the RAkII compiler plugin.
- *
- * This class is responsible for running the IR (Intermediate Representation) lowering passes
- * for the RAkII compiler plugin. It applies the RAkIIDropLoweringVisitor and RAkIILocalDropLoweringVisitor
- * to the module fragment to implement drop functions and process local drop operations.
- */
 internal class RAkIILoweringExtension : IrGenerationExtension {
-    /**
-     * Generates IR code for the RAkII compiler plugin.
-     *
-     * This method is called by the Kotlin compiler during the IR phase of compilation.
-     * It applies the RAkIIDropLoweringVisitor to implement drop functions for classes
-     * implementing the Drop interface, and the RAkIILocalDropLoweringVisitor to process
-     * local drop operations within function bodies.
-     *
-     * @param moduleFragment The module fragment to process
-     * @param pluginContext The IR plugin context that provides access to IR utilities and services
-     */
     override fun generate(
         moduleFragment: IrModuleFragment, pluginContext: IrPluginContext
     ) {
         pluginContext.messageCollector.report(
             CompilerMessageSeverity.LOGGING, "Running RAkII IR lowering pass for ${moduleFragment.name}"
         )
-        moduleFragment.acceptVoid(RAkIIDropLoweringVisitor(pluginContext))
-        moduleFragment.acceptVoid(RAkIILocalDropLoweringVisitor(pluginContext))
+        moduleFragment.acceptVoid(DropGenerationVisitor(pluginContext))
+        val context = DropLoweringContext()
+        moduleFragment.accept(DropDiscoveryVisitor(), context)
+        moduleFragment.accept(DropMemberInlineVisitor(), context)
     }
 }
